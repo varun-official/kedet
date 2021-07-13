@@ -87,84 +87,87 @@ const SchoolDesc = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Image
-        source={require('../assets/gov_school.png')}
-        style={styles.image}
-      />
-      <Text style={styles.hedding_text}>Govt.Higher Primary school</Text>
-      <Text style={styles.hedding_text_kan}>ಸರ್ಕಾರಿ ಉನ್ನತ ಪ್ರಾಥಮಿಕ ಶಾಲೆ</Text>
-      <View style={styles.tc}>
-        <TouchableOpacity>
-          <View style={styles.gridContiner}>
-            <Icon name="heart" style={styles.icon} />
-            <Text style={styles.tt}>Donate</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.gridContiner}>
-            <Icon name="call" style={styles.icon} />
-            <Text style={styles.tt}>Call</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.gridContiner}>
-            <Icon name="location" style={styles.icon} />
-            <Text style={styles.tt}>Location</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          borderBottomColor: 'gray',
-          borderBottomWidth: 1,
-        }}
-      />
-      <View style={styles.container_dec}>
-        <TouchableOpacity onPress={pressLeft}>
-          <Text
-            style={
-              left == true
-                ? styles.container_dec_text
-                : styles.container_dec_text_else
-            }>
-            REQUIREMENTS
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={pressRight}>
-          <Text
-            style={
-              right == true
-                ? styles.container_dec_text
-                : styles.container_dec_text_else
-            }>
-            DESCRIPTION
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          borderBottomColor: 'gray',
-          borderBottomWidth: 1,
-        }}
-      />
-      {left ? (
-        <View style={styles.container_bottom}>
-          <Progress step={5} steps={10} height={7} name="Bench" />
-          <Progress step={9} steps={10} height={7} name="Desk" />
-          <Progress step={3} steps={10} height={7} name="Table" />
-          <Progress step={6} steps={10} height={7} name="Black Board" />
+    <>
+      <StatusBar translucent backgroundColor="transparent" />
+      <ScrollView style={styles.container}>
+        <Image
+          source={require('../assets/gov_school.png')}
+          style={styles.image}
+        />
+        <Text style={styles.hedding_text}>Govt.Higher Primary school</Text>
+        <Text style={styles.hedding_text_kan}>ಸರ್ಕಾರಿ ಉನ್ನತ ಪ್ರಾಥಮಿಕ ಶಾಲೆ</Text>
+        <View style={styles.tc}>
+          <TouchableOpacity>
+            <View style={styles.gridContiner}>
+              <Icon name="heart" style={styles.icon} />
+              <Text style={styles.tt}>Donate</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.gridContiner}>
+              <Icon name="call" style={styles.icon} />
+              <Text style={styles.tt}>Call</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.gridContiner}>
+              <Icon name="location" style={styles.icon} />
+              <Text style={styles.tt}>Location</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-      ) : (
-        <View style={styles.container_bottom}>
-          <Text>
-            ################################################################
-            #############################################################
-            ###############################################3
-          </Text>
+        <View
+          style={{
+            borderBottomColor: 'gray',
+            borderBottomWidth: 1,
+          }}
+        />
+        <View style={styles.container_dec}>
+          <TouchableOpacity onPress={pressLeft}>
+            <Text
+              style={
+                left == true
+                  ? styles.container_dec_text
+                  : styles.container_dec_text_else
+              }>
+              REQUIREMENTS
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={pressRight}>
+            <Text
+              style={
+                right == true
+                  ? styles.container_dec_text
+                  : styles.container_dec_text_else
+              }>
+              DESCRIPTION
+            </Text>
+          </TouchableOpacity>
         </View>
-      )}
-    </ScrollView>
+        <View
+          style={{
+            borderBottomColor: 'gray',
+            borderBottomWidth: 1,
+          }}
+        />
+        {left ? (
+          <View style={styles.container_bottom}>
+            <Progress step={5} steps={10} height={7} name="Bench" />
+            <Progress step={9} steps={10} height={7} name="Desk" />
+            <Progress step={3} steps={10} height={7} name="Table" />
+            <Progress step={6} steps={10} height={7} name="Black Board" />
+          </View>
+        ) : (
+          <View style={styles.container_bottom}>
+            <Text>
+              ################################################################
+              #############################################################
+              ###############################################3
+            </Text>
+          </View>
+        )}
+      </ScrollView>
+    </>
   );
 };
 
