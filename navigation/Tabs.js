@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+const Stack = createStackNavigator();
 
 import {
   SafeAreaView,
@@ -23,12 +25,26 @@ import Notice from '../screens/Notice';
 import Profile from '../screens/Profile';
 import Socialmedia from '../screens/Socialmedia';
 
+const stackScrenHome = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="Home" component={Home}></Stack.Screen>
+      <Stack.Screen name="SchoolDesc" component={SchoolDesc}></Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+
 const Tabs = () => {
   return (
     <NativeBaseProvider>
       <Tab.Navigator
         tabBarOptions={{
           showLabel: false,
+          keyboardHidesTabBar: true,
           style: {
             position: 'absolute',
             bottom: 0,
@@ -40,7 +56,7 @@ const Tabs = () => {
         }}>
         <Tab.Screen
           name="Home"
-          component={SchoolDesc}
+          component={stackScrenHome}
           options={{
             tabBarIcon: ({focused}) => (
               <View

@@ -14,9 +14,10 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const SchoolDesc = () => {
+const SchoolDesc = ({navigation, route}) => {
   const [left, setLeft] = useState(true);
   const [right, setRight] = useState(false);
+  const [name1, setName1] = useState('');
 
   const pressLeft = () => {
     setLeft(true);
@@ -26,6 +27,8 @@ const SchoolDesc = () => {
     setLeft(false);
     setRight(true);
   };
+
+  const {n} = route.params;
 
   const Progress = ({step, steps, height, name}) => {
     const [width, setWidth] = useState(0);
@@ -94,7 +97,7 @@ const SchoolDesc = () => {
           source={require('../assets/gov_school.png')}
           style={styles.image}
         />
-        <Text style={styles.hedding_text}>Govt.Higher Primary school</Text>
+        <Text style={styles.hedding_text}>{n}</Text>
         <Text style={styles.hedding_text_kan}>ಸರ್ಕಾರಿ ಉನ್ನತ ಪ್ರಾಥಮಿಕ ಶಾಲೆ</Text>
         <View style={styles.tc}>
           <TouchableOpacity>

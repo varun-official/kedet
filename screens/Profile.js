@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   TextInput,
   Pressable,
+  Dimensions,
 } from 'react-native';
 
 import {Input, FormControl} from 'native-base';
@@ -18,6 +19,8 @@ import {Input, FormControl} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
+
+const height = Dimensions.get('window').height;
 
 const Profile = () => {
   const sheetRef = React.useRef(null);
@@ -134,6 +137,7 @@ const Profile = () => {
         enabledGestureInteraction={true}
         enabledContentTapInteraction={false}
       />
+
       <View style={styles.container_next}>
         <TouchableOpacity>
           <Icon name="users" style={styles.icon} />
