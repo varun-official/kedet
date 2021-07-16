@@ -12,20 +12,22 @@ import {
   TextInput,
   Pressable,
   Dimensions,
+  Modal,
 } from 'react-native';
 
 import {Input, FormControl} from 'native-base';
 
 import Icon from 'react-native-vector-icons/Feather';
-import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 
 const height = Dimensions.get('window').height;
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const sheetRef = React.useRef(null);
   const fall = React.useRef(new Animated.Value(1)).current;
   const [nobench, setNobench] = useState(1);
+  const [isHead, setIsHead] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const incc = () => {
     setNobench(nobench + 1);
@@ -34,125 +36,111 @@ const Profile = () => {
     setNobench(nobench - 1);
   };
 
-  const renderInner = () => (
-    <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Add Items</Text>
-        <Text style={styles.panelSubtitle}>Select the no of item required</Text>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Bench</Text>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </TouchableOpacity>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          {nobench}
-        </TextInput>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Desk</Text>
-        <Pressable>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </Pressable>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          0
-        </TextInput>
-        <Pressable>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </Pressable>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Table</Text>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </TouchableOpacity>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          0
-        </TextInput>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Board</Text>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </TouchableOpacity>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          0
-        </TextInput>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.panelInputbottom}>
-        <TouchableOpacity onPress={() => sheetRef.current.snapTo(1)}>
-          <Text style={styles.panelInputButtonc}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButtonv}>Save</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
-  const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle}></View>
-      </View>
-    </View>
-  );
-
   return (
+    
     <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        backgroundColor: '#242B2E',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={[640, 0]}
-        renderContent={renderInner}
-        renderHeader={renderHeader}
-        callbackNode={fall}
-        initialSnap={1}
-        enabledGestureInteraction={true}
-        enabledContentTapInteraction={false}
-      />
-
-      <View style={styles.container_next}>
-        <TouchableOpacity>
-          <Icon name="users" style={styles.icon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name="bell" style={styles.icon} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inner_container}>
-        <View style={styles.inside_main}>
-          <Text style={styles.inside_main_text1}>Your Account</Text>
-          <Text style={styles.inside_main_text2}>Doner</Text>
+      contentContainerStyle={
+        isVisible ? styles.scroll_container1 : styles.scroll_container
+      }>
+      <Modal animationType={'slide'} transparent={true} visible={isVisible}>
+        <View style={styles.panel}>
+          <View style={{alignItems: 'center'}}>
+            <Text style={styles.panelTitle}>Add Items</Text>
+            <Text style={styles.panelSubtitle}>
+              Select the no of item required
+            </Text>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Bench</Text>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              {nobench}
+            </TextInput>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Desk</Text>
+            <Pressable>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </Pressable>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              0
+            </TextInput>
+            <Pressable>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </Pressable>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Table</Text>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              0
+            </TextInput>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Board</Text>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              0
+            </TextInput>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.panelInputbottom}>
+            <TouchableOpacity onPress={() => setIsVisible(false)}>
+              <Text style={styles.panelInputButtonc}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsVisible(false)}>
+              <Text style={styles.panelInputButtonv}>Save</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+      </Modal>
+      <TouchableOpacity  style={{marginLeft:"50%",marginTop:-55}}>
+       <Icon name="bell" style={styles.topIcon} />
+      </TouchableOpacity>
+      <TouchableOpacity style={{marginLeft:"80%",marginTop:-25}}>
+       <Icon name="users" style={styles.topIcon} />
+      </TouchableOpacity>
+      <View style={styles.inner_container}>
+        {isHead ? (
+          <View style={styles.inside_main}>
+            <TouchableOpacity onPress={() => navigation.navigate('EditSchool')}>
+              <Text style={styles.inside_main_text2}>Your School</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.inside_main}>
+            <Text style={styles.inside_main_text1}>Your Account</Text>
+            <Text style={styles.inside_main_text2}>Doner</Text>
+          </View>
+        )}
         <FormControl style={styles.input}>
-          <FormControl.Label>Full Name:</FormControl.Label>
+          <FormControl.Label style={{color:"#D2D1D1"}} >Full Name:</FormControl.Label>
           <Input
             variant="outline"
             placeholder="Varun"
@@ -165,7 +153,7 @@ const Profile = () => {
           />
         </FormControl>
         <FormControl style={styles.input1}>
-          <FormControl.Label>Email:</FormControl.Label>
+          <FormControl.Label style={{color:"#D2D1D1"}}>Email:</FormControl.Label>
           <Input
             variant="outline"
             placeholder="varunvadda99@gmail.com"
@@ -178,7 +166,7 @@ const Profile = () => {
           />
         </FormControl>
         <FormControl style={styles.input1}>
-          <FormControl.Label>Phone Number:</FormControl.Label>
+          <FormControl.Label style={{color:"#D2D1D1"}}>Phone Number:</FormControl.Label>
           <Input
             variant="outline"
             placeholder="8548072149"
@@ -191,21 +179,24 @@ const Profile = () => {
           />
         </FormControl>
       </View>
-      <View style={{top: -130}}>
-        <TouchableOpacity onPress={() => sheetRef.current.snapTo(0)}>
-          <Text
-            style={{
-              fontSize: 16,
-              borderWidth: 1,
-              borderColor: '#111515',
-              padding: 15,
-              backgroundColor: '#111515',
-              borderRadius:5
-            }}>
-            + Add Requirement
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {isHead && (
+        <View style={{marginTop:30}}>
+          <TouchableOpacity onPress={() => setIsVisible(true)}>
+            <Text
+              style={{
+                fontSize: 16,
+                borderWidth: 1,
+                borderColor: '#0D0D0D',
+                padding: 15,
+                backgroundColor: '#111515',
+                color:'white',
+                borderRadius:5
+              }}>
+              + Add Requirement
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -213,45 +204,71 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
+  scroll_container: {
+    flex: 1,
+    backgroundColor: '#2C2E32',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scroll_container1: {
+    flex: 1,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.06,
+    
+  },
+
   container_next: {
     flex: 1,
     backgroundColor: '#242B2E',
     margin: 30,
     flexDirection: 'row-reverse',
     left: 100,
+    zIndex:-1
   },
   icon: {
     fontSize: 24,
     paddingLeft: 40,
-    color: '#C2C2C2',
+    color: 'red',
   },
   inner_container: {
     backgroundColor: '#121418',
     width: '95%',
     height: 470,
-    top: -180,
     borderRadius: 20,
     alignItems: 'center',
+    zIndex:-1,
+    marginTop:30
   },
   inside_main: {
     marginTop: 40,
     flexDirection: 'row',
+    
   },
   inside_main_text1: {
     fontSize: 23,
     left: -40,
     top: 15,
+    color:"white"
   },
   inside_main_text2: {
     fontSize: 20,
-    right: -20,
-    backgroundColor: '#282C35',
-    padding: 15,
+    backgroundColor: '#242932',
+    padding: 12,
+    borderRadius: 10,
+    color:"white"
+  },
+  inside_main_text3: {
+    fontSize: 20,
+    backgroundColor: '#242B2E',
+    padding: 12,
+    left: '-30%',
     borderRadius: 10,
   },
   input: {
     marginTop: 20,
-    width: '90%',
+    width: '90%'
   },
   input1: {
     marginTop: 30,
@@ -270,18 +287,22 @@ const styles = StyleSheet.create({
   },
   panelHeader: {
     alignItems: 'center',
+    color:"white"
   },
   panelHandle: {
     width: 40,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#00000040',
-    marginBottom: 10,
+    marginBottom: 10
   },
   panel: {
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#111515',
     paddingTop: 20,
+    height: '60%',
+    marginTop: 'auto',
+    color:"white"
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
     // shadowColor: '#000000',
@@ -292,6 +313,7 @@ const styles = StyleSheet.create({
   panelTitle: {
     fontSize: 27,
     height: 35,
+    color:"#D9D2D2"
   },
   panelSubtitle: {
     fontSize: 14,
@@ -319,10 +341,11 @@ const styles = StyleSheet.create({
   },
   panelInputText: {
     fontSize: 20,
+    color:"#D9D2D2"
   },
   panelInputButton1: {
     borderWidth: 1,
-    borderColor: '#00FFE6',
+    borderColor: 'red',
     borderRadius: 5,
     padding: 5,
     paddingLeft: 13,
@@ -332,11 +355,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: -50,
+    color:"#D3CFCF"
   },
 
   panelInputButton2: {
     borderWidth: 1,
-    borderColor: '#00FFE6',
+    borderColor: 'red',
     borderRadius: 5,
     padding: 5,
     paddingLeft: 13,
@@ -346,6 +370,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: -40,
+    color:"#D3CFCF"
   },
   panelInputInput: {
     width: 80,
@@ -353,13 +378,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
     borderWidth: 1,
-    borderColor: '#00FFE6',
+    borderColor: 'red',
     borderRadius: 5,
+    color:"#D3CFCF"
   },
   panelInputButtonc: {
     borderWidth: 2,
-    borderColor: 'red',
-    backgroundColor: 'red',
+    borderColor: '#FF5757',
+    backgroundColor: '#FF5757',
+
     borderRadius: 10,
     padding: 20,
     width: 130,
@@ -368,12 +395,17 @@ const styles = StyleSheet.create({
   },
   panelInputButtonv: {
     borderWidth: 2,
-    borderColor: 'green',
-    backgroundColor: 'green',
+    borderColor: '#00D355',
+    backgroundColor: '#00D355',
     borderRadius: 10,
     padding: 20,
     width: 130,
     height: 60,
     textAlign: 'center',
   },
+  topIcon:{
+    color:"#90B8F8",
+    zIndex:3,
+    fontSize:24
+  }
 });

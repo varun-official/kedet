@@ -55,7 +55,7 @@ function App({navigation}) {
                       style={{
                         borderBottomColor: 'grey',
                         borderBottomWidth: 1,
-                        marginTop: 35,
+                        marginTop: 30,
                         opacity: 0.7,
                       }}
                     />

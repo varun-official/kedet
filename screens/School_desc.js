@@ -48,13 +48,12 @@ const SchoolDesc = ({navigation, route}) => {
     }, [width, step]);
 
     return (
-      <>
+      <View style={{marginLeft:5,marginRight:5}}>
         <Text
           style={{
             fontSize: 15,
             fontWeight: '900',
-            marginBottom: 8,
-            marginTop: 35,
+            marginTop: 20,
           }}>
           {name}
         </Text>
@@ -68,6 +67,7 @@ const SchoolDesc = ({navigation, route}) => {
             backgroundColor: '#BFBFBF',
             borderRadius: height,
             overflow: 'hidden',
+            marginTop:2
           }}>
           <Animated.View
             style={{
@@ -85,7 +85,7 @@ const SchoolDesc = ({navigation, route}) => {
             }}
           />
         </View>
-      </>
+      </View>
     );
   };
 
@@ -150,22 +150,22 @@ const SchoolDesc = ({navigation, route}) => {
         <View
           style={{
             borderBottomColor: '#5B6472',
-            borderBottomWidth: 1,
+            borderBottomWidth: 1
           }}
         />
         {left ? (
-          <View style={styles.container_bottom}>
-            <Progress step={5} steps={10} height={7} name="Bench" />
-            <Progress step={9} steps={10} height={7} name="Desk" />
-            <Progress step={3} steps={10} height={7} name="Table" />
-            <Progress step={6} steps={10} height={7} name="Black Board" />
+          <View  style={styles.container_bottom}>
+            <Progress step={5} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Bench</Text>} />
+            <Progress step={9} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Desk</Text>} />
+            <Progress step={3} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Table</Text>} />
+            <Progress step={6} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Black Board</Text>} />
           </View>
         ) : (
           <View style={styles.container_bottom}>
-            <Text>
+            <Text style={{color:'white'}}>
               ################################################################
               #############################################################
-              ###############################################3
+              ###############################################
             </Text>
           </View>
         )}
@@ -186,10 +186,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 20,
     paddingLeft: 15,
+    color:'white'
   },
   hedding_text_kan: {
     fontSize: 17,
     paddingLeft: 17,
+    color:'#bebebe'
   },
   tc: {
     flex: 1,
@@ -204,22 +206,22 @@ const styles = StyleSheet.create({
   gridContiner: {
     flex: 1,
     flexDirection: 'row',
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#5B6472',
+    borderColor: '#303132',
     height: 50,
-    width: 120,
+    width: 105,
     backgroundColor: '#40454D',
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    color: '#01ecd5',
+    color: '#90B8F8',
     fontSize: 20,
     marginRight: 5,
   },
   tt: {
-    fontSize: 17,
+    fontSize: 16,
     color:"#DEDEDE"
   },
   container_dec: {
@@ -231,22 +233,24 @@ const styles = StyleSheet.create({
   },
   container_dec_text: {
     fontSize: 17,
-    color: '#00FFE6',
-    paddingBottom: 5,
-    borderBottomWidth: 4,
-    borderBottomColor: '#00FFE6',
-    borderRadius: 10,
+    fontWeight:'bold',
+    color: '#5F85DB',
   },
   container_dec_text_else: {
     fontSize: 17,
     color: '#BEBEBE',
-    paddingBottom: 5,
+
   },
   container_bottom: {
-    flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    flex:1,
+    paddingTop:20
+    
   },
+  progressBarStyle:{
+     color:'white'
+  }
 });
 
 export default SchoolDesc;

@@ -24,6 +24,7 @@ import SchoolDesc from '../screens/School_desc';
 import Notice from '../screens/Notice';
 import Profile from '../screens/Profile';
 import Socialmedia from '../screens/Socialmedia';
+import EditSchool from '../screens/EditSchool';
 
 const stackScrenHome = () => {
   return (
@@ -37,7 +38,18 @@ const stackScrenHome = () => {
     </Stack.Navigator>
   );
 };
-
+const stackScrenProfile = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Profile"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="Profile" component={Profile}></Stack.Screen>
+      <Stack.Screen name="EditSchool" component={EditSchool}></Stack.Screen>
+    </Stack.Navigator>
+  );
+};
 const Tabs = () => {
   return (
     <NativeBaseProvider>
@@ -49,9 +61,8 @@ const Tabs = () => {
             position: 'absolute',
             bottom: 0,
             elevation: 0,
-            backgroundColor: '#ffffff',
-            borderRadius: 15,
-            height: 70,
+            backgroundColor: '#000000',
+            height: 60
           },
         }}>
         <Tab.Screen
@@ -141,7 +152,7 @@ const Tabs = () => {
 
         <Tab.Screen
           name="Profile"
-          component={Profile}
+          component={stackScrenProfile}
           options={{
             tabBarIcon: ({focused}) => (
               <View
@@ -157,12 +168,12 @@ const Tabs = () => {
                     color: focused ? 'white' : '#adadad',
                   }}
                 />
-                <Text
+             <Text
                   style={{
                     color: focused ? 'white' : '#adadad',
                     fontSize: 12,
-                  }}>
-                  Profile
+                   }}>
+            Profile
                 </Text>
               </View>
             ),
