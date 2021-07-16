@@ -24,6 +24,7 @@ import SchoolDesc from '../screens/School_desc';
 import Notice from '../screens/Notice';
 import Profile from '../screens/Profile';
 import Socialmedia from '../screens/Socialmedia';
+import EditSchool from '../screens/EditSchool';
 
 const stackScrenHome = () => {
   return (
@@ -34,6 +35,18 @@ const stackScrenHome = () => {
       }}>
       <Stack.Screen name="Home" component={Home}></Stack.Screen>
       <Stack.Screen name="SchoolDesc" component={SchoolDesc}></Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+const stackScrenProfile = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Profile"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="Profile" component={Profile}></Stack.Screen>
+      <Stack.Screen name="EditSchool" component={EditSchool}></Stack.Screen>
     </Stack.Navigator>
   );
 };
@@ -141,7 +154,7 @@ const Tabs = () => {
 
         <Tab.Screen
           name="Profile"
-          component={Profile}
+          component={stackScrenProfile}
           options={{
             tabBarIcon: ({focused}) => (
               <View

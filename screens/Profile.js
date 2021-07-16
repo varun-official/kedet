@@ -18,12 +18,11 @@ import {
 import {Input, FormControl} from 'native-base';
 
 import Icon from 'react-native-vector-icons/Feather';
-import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 
 const height = Dimensions.get('window').height;
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const sheetRef = React.useRef(null);
   const fall = React.useRef(new Animated.Value(1)).current;
   const [nobench, setNobench] = useState(1);
@@ -132,7 +131,7 @@ const Profile = () => {
       <View style={styles.inner_container}>
         {isHead ? (
           <View style={styles.inside_main}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('EditSchool')}>
               <Text style={styles.inside_main_text2}>Your School</Text>
             </TouchableOpacity>
           </View>
@@ -182,20 +181,22 @@ const Profile = () => {
           />
         </FormControl>
       </View>
-      <View style={{top: -130}}>
-        <TouchableOpacity onPress={() => setIsVisible(true)}>
-          <Text
-            style={{
-              fontSize: 16,
-              borderWidth: 1,
-              borderColor: '#0D0D0D',
-              padding: 15,
-              backgroundColor: '#0D0D0D',
-            }}>
-            + Add Requirement
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {isHead && (
+        <View style={{top: -130}}>
+          <TouchableOpacity onPress={() => setIsVisible(true)}>
+            <Text
+              style={{
+                fontSize: 16,
+                borderWidth: 1,
+                borderColor: '#0D0D0D',
+                padding: 15,
+                backgroundColor: '#0D0D0D',
+              }}>
+              + Add Requirement
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 };
