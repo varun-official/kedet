@@ -12,6 +12,7 @@ import {
   TextInput,
   Pressable,
   Dimensions,
+  Modal,
 } from 'react-native';
 
 import {Input, FormControl} from 'native-base';
@@ -26,6 +27,8 @@ const Profile = () => {
   const sheetRef = React.useRef(null);
   const fall = React.useRef(new Animated.Value(1)).current;
   const [nobench, setNobench] = useState(1);
+  const [isHead, setIsHead] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const incc = () => {
     setNobench(nobench + 1);
@@ -34,109 +37,89 @@ const Profile = () => {
     setNobench(nobench - 1);
   };
 
-  const renderInner = () => (
-    <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Add Items</Text>
-        <Text style={styles.panelSubtitle}>Select the no of item required</Text>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Bench</Text>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </TouchableOpacity>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          {nobench}
-        </TextInput>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Desk</Text>
-        <Pressable>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </Pressable>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          0
-        </TextInput>
-        <Pressable>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </Pressable>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Table</Text>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </TouchableOpacity>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          0
-        </TextInput>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.panelInput}>
-        <Text style={styles.panelInputText}>Board</Text>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton1}>-</Text>
-        </TouchableOpacity>
-        <TextInput
-          keyboardType="numeric"
-          caretHidden={true}
-          style={styles.panelInputInput}>
-          0
-        </TextInput>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButton2}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.panelInputbottom}>
-        <TouchableOpacity onPress={() => sheetRef.current.snapTo(1)}>
-          <Text style={styles.panelInputButtonc}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.panelInputButtonv}>save</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
-  const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle}></View>
-      </View>
-    </View>
-  );
-
   return (
     <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        backgroundColor: '#242B2E',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={[640, 0]}
-        renderContent={renderInner}
-        renderHeader={renderHeader}
-        callbackNode={fall}
-        initialSnap={1}
-        enabledGestureInteraction={true}
-        enabledContentTapInteraction={false}
-      />
+      contentContainerStyle={
+        isVisible ? styles.scroll_container1 : styles.scroll_container
+      }>
+      <Modal animationType={'slide'} transparent={true} visible={isVisible}>
+        <View style={styles.panel}>
+          <View style={{alignItems: 'center'}}>
+            <Text style={styles.panelTitle}>Add Items</Text>
+            <Text style={styles.panelSubtitle}>
+              Select the no of item required
+            </Text>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Bench</Text>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              {nobench}
+            </TextInput>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Desk</Text>
+            <Pressable>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </Pressable>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              0
+            </TextInput>
+            <Pressable>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </Pressable>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Table</Text>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              0
+            </TextInput>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.panelInput}>
+            <Text style={styles.panelInputText}>Board</Text>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton1}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              keyboardType="numeric"
+              caretHidden={true}
+              style={styles.panelInputInput}>
+              0
+            </TextInput>
+            <TouchableOpacity>
+              <Text style={styles.panelInputButton2}>+</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.panelInputbottom}>
+            <TouchableOpacity onPress={() => setIsVisible(false)}>
+              <Text style={styles.panelInputButtonc}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsVisible(false)}>
+              <Text style={styles.panelInputButtonv}>save</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <View style={styles.container_next}>
         <TouchableOpacity>
@@ -147,10 +130,18 @@ const Profile = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.inner_container}>
-        <View style={styles.inside_main}>
-          <Text style={styles.inside_main_text1}>Your Account</Text>
-          <Text style={styles.inside_main_text2}>Doner</Text>
-        </View>
+        {isHead ? (
+          <View style={styles.inside_main}>
+            <TouchableOpacity>
+              <Text style={styles.inside_main_text2}>Your School</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.inside_main}>
+            <Text style={styles.inside_main_text1}>Your Account</Text>
+            <Text style={styles.inside_main_text2}>Doner</Text>
+          </View>
+        )}
         <FormControl style={styles.input}>
           <FormControl.Label>Full Name:</FormControl.Label>
           <Input
@@ -192,7 +183,7 @@ const Profile = () => {
         </FormControl>
       </View>
       <View style={{top: -130}}>
-        <TouchableOpacity onPress={() => sheetRef.current.snapTo(0)}>
+        <TouchableOpacity onPress={() => setIsVisible(true)}>
           <Text
             style={{
               fontSize: 16,
@@ -212,6 +203,20 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
+  scroll_container: {
+    flex: 1,
+    backgroundColor: '#242B2E',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scroll_container1: {
+    flex: 1,
+    backgroundColor: 'gray',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.05,
+  },
+
   container_next: {
     flex: 1,
     backgroundColor: '#242B2E',
@@ -243,9 +248,15 @@ const styles = StyleSheet.create({
   },
   inside_main_text2: {
     fontSize: 20,
-    right: -20,
     backgroundColor: '#242B2E',
-    padding: 15,
+    padding: 12,
+    borderRadius: 10,
+  },
+  inside_main_text3: {
+    fontSize: 20,
+    backgroundColor: '#242B2E',
+    padding: 12,
+    left: '-30%',
     borderRadius: 10,
   },
   input: {
@@ -281,6 +292,8 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#FFFFFF',
     paddingTop: 20,
+    height: '60%',
+    marginTop: 'auto',
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
     // shadowColor: '#000000',

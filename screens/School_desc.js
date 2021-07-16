@@ -17,7 +17,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const SchoolDesc = ({navigation, route}) => {
   const [left, setLeft] = useState(true);
   const [right, setRight] = useState(false);
-  const [name1, setName1] = useState('');
 
   const pressLeft = () => {
     setLeft(true);
