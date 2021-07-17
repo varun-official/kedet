@@ -22,7 +22,6 @@ const MissingChild = ({navigation}) => {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
-      cropping: true,
       compressImageQuality: 0.5,
     }).then(image => {
       setImage(image.path);
@@ -100,7 +99,11 @@ const MissingChild = ({navigation}) => {
               paddingTop: 30,
               marginBottom: 0,
             }}>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity
+              onPress={() => {
+                setImage(null);
+                navigation.navigate('Home');
+              }}>
               <Text style={styles.panelInputButtonC}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
