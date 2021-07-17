@@ -9,7 +9,7 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const topbarHeight = 90-StatusBar.currentHeight;
+const topbarHeight = 95-StatusBar.currentHeight;
 
 function App() {
   StatusBar.setBackgroundColor("#00000f");

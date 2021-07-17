@@ -51,7 +51,6 @@ const stackScrenProfile = () => {
     </Stack.Navigator>
   );
 };
-
 const Tabs = () => {
   return (
     <NativeBaseProvider>
@@ -63,9 +62,8 @@ const Tabs = () => {
             position: 'absolute',
             bottom: 0,
             elevation: 0,
-            backgroundColor: '#ffffff',
-            borderRadius: 15,
-            height: 70,
+            backgroundColor: '#000000',
+            height: 60,
           },
         }}>
         <Tab.Screen
@@ -83,15 +81,15 @@ const Tabs = () => {
                   name="home"
                   style={{
                     fontSize: 25,
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                   }}
                 />
                 <Text
                   style={{
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                     fontSize: 12,
                   }}>
-                  HOME
+                  Home
                 </Text>
               </View>
             ),
@@ -111,12 +109,12 @@ const Tabs = () => {
                   name="people-circle-outline"
                   style={{
                     fontSize: 25,
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                   }}
                 />
                 <Text
                   style={{
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                     fontSize: 12,
                   }}>
                   SocialMedia
@@ -139,12 +137,12 @@ const Tabs = () => {
                   name="mail-unread"
                   style={{
                     fontSize: 25,
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                   }}
                 />
                 <Text
                   style={{
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                     fontSize: 12,
                   }}>
                   Notice
@@ -168,12 +166,12 @@ const Tabs = () => {
                   name="person"
                   style={{
                     fontSize: 25,
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                   }}
                 />
                 <Text
                   style={{
-                    color: focused ? '#e32f45' : '#748c94',
+                    color: focused ? 'white' : '#adadad',
                     fontSize: 12,
                   }}>
                   Profile

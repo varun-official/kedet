@@ -22,13 +22,14 @@ const EditSchool = ({navigation}) => {
     <View style={styles.scroll_container}>
       <ScrollView>
         <View style={styles.inner_container}>
-          <Text style={{fontSize: 20, color: 'white'}}>Edit School</Text>
+          <Text style={{fontSize: 20,color:"white"}}>Edit School</Text>
           <FormControl style={styles.input}>
             <FormControl.Label>School Name:</FormControl.Label>
             <Input
               variant="outline"
               placeholder="Government higher primary school"
               value="Government higher primary school"
+              
               color="white"
             />
           </FormControl>
@@ -39,6 +40,7 @@ const EditSchool = ({navigation}) => {
               placeholder="enter the school name"
               color="white"
               value="Kapikad, Mangalore - 575004"
+              
             />
           </FormControl>
           <FormControl style={styles.input}>
@@ -47,6 +49,7 @@ const EditSchool = ({navigation}) => {
               variant="outline"
               placeholder="Government higher primary school"
               value="Kannada"
+              
               color="white"
             />
           </FormControl>
@@ -56,15 +59,17 @@ const EditSchool = ({navigation}) => {
               variant="outline"
               placeholder="Government higher primary school"
               value="2015101004414"
+              
               color="white"
             />
           </FormControl>
           <FormControl style={styles.input}>
-            <FormControl.Label>School Bank IFSC Code:</FormControl.Label>
+            <FormControl.Label color="#D9D2D2">School Bank IFSC Code:</FormControl.Label>
             <Input
               variant="outline"
               placeholder="Government higher primary school"
               value="CNRB0004414"
+        
               color="white"
             />
           </FormControl>
@@ -74,33 +79,34 @@ const EditSchool = ({navigation}) => {
               variant="outline"
               placeholder="Government higher primary school"
               value="sahyadri@oksbi"
+              
               color="white"
             />
           </FormControl>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingTop: 30,
-                marginBottom: 0,
-              }}>
-              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                <Text style={styles.panelInputButtonC}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingTop: 30,
-                marginBottom: 50,
-                marginLeft: 15,
-              }}>
-              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                <Text style={styles.panelInputButtonv}>Save</Text>
-              </TouchableOpacity>
-            </View>
+         <View style={{flexDirection:"row"}}> 
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingTop: 30,
+              marginBottom: 0,
+            }}>
+            <TouchableOpacity onPress={()=>navigation.navigate("Profile")}>
+              <Text style={styles.panelInputButtonC}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingTop: 30,
+              marginBottom: 50,
+              marginLeft:15
+            }}>
+            <TouchableOpacity onPress={()=>navigation.navigate("Profile")}>
+              <Text style={styles.panelInputButtonv}>Save</Text>
+            </TouchableOpacity>
           </View>
         </View>
+        </View> 
       </ScrollView>
     </View>
   );
@@ -114,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginBottom: 0,
+    marginBottom: 0
     // zIndex:3000
   },
   inner_container: {

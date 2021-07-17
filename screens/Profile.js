@@ -114,20 +114,17 @@ const Profile = ({navigation}) => {
               <Text style={styles.panelInputButtonc}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setIsVisible(false)}>
-              <Text style={styles.panelInputButtonv}>save</Text>
+              <Text style={styles.panelInputButtonv}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-
-      <View style={styles.container_next}>
-        <TouchableOpacity>
-          <Icon name="users" style={styles.icon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name="bell" style={styles.icon} />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={{marginLeft: '50%', marginTop: -55}}>
+        <Icon name="bell" style={styles.topIcon} />
+      </TouchableOpacity>
+      <TouchableOpacity style={{marginLeft: '80%', marginTop: -25}}>
+        <Icon name="users" style={styles.topIcon} />
+      </TouchableOpacity>
       <View style={styles.inner_container}>
         {isHead ? (
           <View style={styles.inside_main}>
@@ -147,10 +144,10 @@ const Profile = ({navigation}) => {
             variant="outline"
             placeholder="Varun"
             _light={{
-              placeholderTextColor: 'blueGray.400',
+              placeholderTextColor: 'white',
             }}
             _dark={{
-              placeholderTextColor: 'blueGray.50',
+              placeholderTextColor: 'white',
             }}
           />
         </FormControl>
@@ -160,10 +157,10 @@ const Profile = ({navigation}) => {
             variant="outline"
             placeholder="varunvadda99@gmail.com"
             _light={{
-              placeholderTextColor: 'blueGray.400',
+              placeholderTextColor: 'white',
             }}
             _dark={{
-              placeholderTextColor: 'blueGray.50',
+              placeholderTextColor: 'white',
             }}
           />
         </FormControl>
@@ -173,16 +170,16 @@ const Profile = ({navigation}) => {
             variant="outline"
             placeholder="8548072149"
             _light={{
-              placeholderTextColor: 'blueGray.400',
+              placeholderTextColor: 'white',
             }}
             _dark={{
-              placeholderTextColor: 'blueGray.50',
+              placeholderTextColor: 'white',
             }}
           />
         </FormControl>
       </View>
       {isHead && (
-        <View style={{top: -130}}>
+        <View style={{marginTop: 30}}>
           <TouchableOpacity onPress={() => setIsVisible(true)}>
             <Text
               style={{
@@ -190,7 +187,9 @@ const Profile = ({navigation}) => {
                 borderWidth: 1,
                 borderColor: '#0D0D0D',
                 padding: 15,
-                backgroundColor: '#0D0D0D',
+                backgroundColor: '#111515',
+                color: 'white',
+                borderRadius: 5,
               }}>
               + Add Requirement
             </Text>
@@ -206,16 +205,16 @@ export default Profile;
 const styles = StyleSheet.create({
   scroll_container: {
     flex: 1,
-    backgroundColor: '#242B2E',
+    backgroundColor: '#2C2E32',
     alignItems: 'center',
     justifyContent: 'center',
   },
   scroll_container1: {
     flex: 1,
-    backgroundColor: 'gray',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 0.05,
+    opacity: 0.06,
   },
 
   container_next: {
@@ -224,6 +223,7 @@ const styles = StyleSheet.create({
     margin: 30,
     flexDirection: 'row-reverse',
     left: 100,
+    zIndex: -1,
   },
   icon: {
     fontSize: 24,
@@ -231,12 +231,13 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   inner_container: {
-    backgroundColor: '#0D0D0D',
+    backgroundColor: '#121418',
     width: '95%',
     height: 470,
-    top: -180,
     borderRadius: 20,
     alignItems: 'center',
+    zIndex: -1,
+    marginTop: 30,
   },
   inside_main: {
     marginTop: 40,
@@ -246,12 +247,14 @@ const styles = StyleSheet.create({
     fontSize: 23,
     left: -40,
     top: 15,
+    color: 'white',
   },
   inside_main_text2: {
     fontSize: 20,
-    backgroundColor: '#242B2E',
+    backgroundColor: '#242932',
     padding: 12,
     borderRadius: 10,
+    color: 'white',
   },
   inside_main_text3: {
     fontSize: 20,
@@ -281,6 +284,7 @@ const styles = StyleSheet.create({
   },
   panelHeader: {
     alignItems: 'center',
+    color: 'white',
   },
   panelHandle: {
     width: 40,
@@ -291,10 +295,11 @@ const styles = StyleSheet.create({
   },
   panel: {
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#111515',
     paddingTop: 20,
     height: '60%',
     marginTop: 'auto',
+    color: 'white',
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
     // shadowColor: '#000000',
@@ -305,6 +310,7 @@ const styles = StyleSheet.create({
   panelTitle: {
     fontSize: 27,
     height: 35,
+    color: '#D9D2D2',
   },
   panelSubtitle: {
     fontSize: 14,
@@ -332,6 +338,7 @@ const styles = StyleSheet.create({
   },
   panelInputText: {
     fontSize: 20,
+    color: '#D9D2D2',
   },
   panelInputButton1: {
     borderWidth: 1,
@@ -345,6 +352,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: -50,
+    color: '#D3CFCF',
   },
 
   panelInputButton2: {
@@ -359,6 +367,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: -40,
+    color: '#D3CFCF',
   },
   panelInputInput: {
     width: 80,
@@ -368,11 +377,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'red',
     borderRadius: 5,
+    color: '#D3CFCF',
   },
   panelInputButtonc: {
     borderWidth: 2,
-    borderColor: 'red',
-    backgroundColor: 'red',
+    borderColor: '#FF5757',
+    backgroundColor: '#FF5757',
 
     borderRadius: 10,
     padding: 20,
@@ -382,12 +392,17 @@ const styles = StyleSheet.create({
   },
   panelInputButtonv: {
     borderWidth: 2,
-    borderColor: 'green',
-    backgroundColor: 'green',
+    borderColor: '#00D355',
+    backgroundColor: '#00D355',
     borderRadius: 10,
     padding: 20,
     width: 130,
     height: 60,
     textAlign: 'center',
+  },
+  topIcon: {
+    color: '#90B8F8',
+    zIndex: 3,
+    fontSize: 24,
   },
 });
