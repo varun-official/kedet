@@ -17,24 +17,19 @@ import {
 
 import {Input, FormControl} from 'native-base';
 
-const EditSchool = () => {
+const EditSchool = ({navigation}) => {
   return (
     <View style={styles.scroll_container}>
       <ScrollView>
         <View style={styles.inner_container}>
-          <Text style={{fontSize: 20}}>Edit School</Text>
+          <Text style={{fontSize: 20, color: 'white'}}>Edit School</Text>
           <FormControl style={styles.input}>
             <FormControl.Label>School Name:</FormControl.Label>
             <Input
               variant="outline"
               placeholder="Government higher primary school"
               value="Government higher primary school"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
+              color="white"
             />
           </FormControl>
           <FormControl style={styles.input}>
@@ -42,13 +37,8 @@ const EditSchool = () => {
             <Input
               variant="outline"
               placeholder="enter the school name"
+              color="white"
               value="Kapikad, Mangalore - 575004"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
             />
           </FormControl>
           <FormControl style={styles.input}>
@@ -57,12 +47,7 @@ const EditSchool = () => {
               variant="outline"
               placeholder="Government higher primary school"
               value="Kannada"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
+              color="white"
             />
           </FormControl>
           <FormControl style={styles.input}>
@@ -71,12 +56,7 @@ const EditSchool = () => {
               variant="outline"
               placeholder="Government higher primary school"
               value="2015101004414"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
+              color="white"
             />
           </FormControl>
           <FormControl style={styles.input}>
@@ -85,12 +65,7 @@ const EditSchool = () => {
               variant="outline"
               placeholder="Government higher primary school"
               value="CNRB0004414"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
+              color="white"
             />
           </FormControl>
           <FormControl style={styles.input}>
@@ -99,23 +74,31 @@ const EditSchool = () => {
               variant="outline"
               placeholder="Government higher primary school"
               value="sahyadri@oksbi"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
+              color="white"
             />
           </FormControl>
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingTop: 30,
-              marginBottom: 50,
-            }}>
-            <TouchableOpacity>
-              <Text style={styles.panelInputButtonv}>save</Text>
-            </TouchableOpacity>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingTop: 30,
+                marginBottom: 0,
+              }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                <Text style={styles.panelInputButtonC}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingTop: 30,
+                marginBottom: 50,
+                marginLeft: 15,
+              }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                <Text style={styles.panelInputButtonv}>Save</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -127,15 +110,16 @@ export default EditSchool;
 const styles = StyleSheet.create({
   scroll_container: {
     flex: 1,
-    backgroundColor: '#242B2E',
+    backgroundColor: '#2C2E32',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginBottom: 50,
+    marginBottom: 0,
+    // zIndex:3000
   },
   inner_container: {
     flex: 1,
-    backgroundColor: '#0D0D0D',
+    backgroundColor: '#121418',
     width: '100%',
     height: 'auto',
     borderRadius: 20,
@@ -145,6 +129,16 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 20,
+  },
+  panelInputButtonC: {
+    borderWidth: 2,
+    borderColor: 'red',
+    backgroundColor: 'red',
+    borderRadius: 10,
+    padding: 20,
+    width: 130,
+    height: 60,
+    textAlign: 'center',
   },
 
   panelInputButtonv: {
