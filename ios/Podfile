@@ -12,6 +12,8 @@ target 'Kedet' do
     :hermes_enabled => false
   )
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'KedetTests' do
     inherit! :complete
     # Pods for testing

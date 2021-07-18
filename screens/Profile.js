@@ -140,7 +140,7 @@ const Profile = ({navigation}) => {
           </View>
         )}
         <FormControl style={styles.input}>
-          <FormControl.Label style={{color:"#D2D1D1"}} >Full Name:</FormControl.Label>
+          <FormControl.Label><Text style={{color:"#D2D1D1"}}>Name:</Text></FormControl.Label>
           <Input
             variant="outline"
             placeholder="Varun"
@@ -153,7 +153,7 @@ const Profile = ({navigation}) => {
           />
         </FormControl>
         <FormControl style={styles.input1}>
-          <FormControl.Label style={{color:"#D2D1D1"}}>Email:</FormControl.Label>
+          <FormControl.Label><Text style={{color:"#D2D1D1"}}>Email:</Text></FormControl.Label>
           <Input
             variant="outline"
             placeholder="varunvadda99@gmail.com"
@@ -166,7 +166,7 @@ const Profile = ({navigation}) => {
           />
         </FormControl>
         <FormControl style={styles.input1}>
-          <FormControl.Label style={{color:"#D2D1D1"}}>Phone Number:</FormControl.Label>
+          <FormControl.Label><Text style={{color:"white"}}>Phone Number:</Text></FormControl.Label>
           <Input
             variant="outline"
             placeholder="8548072149"
@@ -180,14 +180,14 @@ const Profile = ({navigation}) => {
         </FormControl>
       </View>
       {isHead && (
-        <View style={{marginTop:30}}>
+        <View style={{marginTop:20}}>
           <TouchableOpacity onPress={() => setIsVisible(true)}>
             <Text
               style={{
                 fontSize: 16,
                 borderWidth: 1,
                 borderColor: '#0D0D0D',
-                padding: 15,
+                padding: 10,
                 backgroundColor: '#111515',
                 color:'white',
                 borderRadius:5
@@ -235,16 +235,18 @@ const styles = StyleSheet.create({
   inner_container: {
     backgroundColor: '#121418',
     width: '95%',
-    height: 470,
+    height: 450,
     borderRadius: 20,
     alignItems: 'center',
     zIndex:-1,
-    marginTop:30
+    marginTop:30,
+    borderColor:'grey',
+    borderWidth:1
   },
   inside_main: {
-    marginTop: 40,
+    marginTop: 20,
     flexDirection: 'row',
-    
+ 
   },
   inside_main_text1: {
     fontSize: 23,
