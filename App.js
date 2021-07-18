@@ -16,12 +16,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Tabs from './navigation/Tabs';
 
+import Providers from './navigation';
+
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Tabs />
-    </NavigationContainer>
-  );
+  return <Providers />;
 };
 
 export default App;
