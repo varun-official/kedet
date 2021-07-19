@@ -1,3 +1,5 @@
+{
+  /* 
 import {Avatar} from 'native-base';
 import React, {useState} from 'react';
 import {
@@ -176,3 +178,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+*/
+}
