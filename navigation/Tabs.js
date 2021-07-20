@@ -94,7 +94,7 @@ const Tabs = () => {
               </View>
             ),
           }}></Tab.Screen>
-        <Tab.Screen
+        {/*<Tab.Screen
           name="Socialmedia"
           component={Socialmedia}
           options={{
@@ -121,7 +121,7 @@ const Tabs = () => {
                 </Text>
               </View>
             ),
-          }}></Tab.Screen>
+          }}></Tab.Screen>*/}
         <Tab.Screen
           name="Notice"
           component={MissingChild}

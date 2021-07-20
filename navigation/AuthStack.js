@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-const Stack = createStackNavigator();
 import {
   SafeAreaView,
   ScrollView,
@@ -15,22 +14,16 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-
+const Stack = createStackNavigator();
 import Loading from '../screens/Loading';
-import SignIn from '../screens/SignIn';
 import Register from '../screens/Register';
-
+import Login from '../screens/Login';
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator
-      initialRouteName="Register"
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Register" component={Register}></Stack.Screen>
-      <Stack.Screen name="Loading" component={Loading}></Stack.Screen>
-      <Stack.Screen name="SignIn" component={SignIn}></Stack.Screen>
+    <Stack.Navigator initialRouteName={"Register"}>      
+      <Stack.Screen name="Login" options={{header: ()=>null}} component={Login}></Stack.Screen>
+      <Stack.Screen name="Register" options={{header: ()=>null}} component={Register}></Stack.Screen>
    </Stack.Navigator>
   );
 };

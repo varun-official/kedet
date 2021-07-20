@@ -22,7 +22,7 @@ const Routes = () => {
     return sub;
   },[]); 
   
-  if(initializing) return null;
+  if(initializing) return <Text>Loading</Text>;
   
   return (
     <NavigationContainer>{user ? <Tabs /> : <AuthStack />}</NavigationContainer>

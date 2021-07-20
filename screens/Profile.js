@@ -154,6 +154,7 @@ const Profile = ({navigation,route}) => {
           </View>
         </View>
       </Modal>
+      
       <TouchableOpacity style={{marginTop:-55,marginLeft: '50%', }} onPress={()=>{
         logout();
       }}>
@@ -204,7 +205,6 @@ const Profile = ({navigation,route}) => {
           />
         </FormControl>
         <FormControl style={styles.input1}>
-
           <FormControl.Label><Text style={{color:"white"}}>Phone Number:</Text></FormControl.Label>
           <Input
             editable={false}
@@ -264,7 +264,6 @@ const styles = StyleSheet.create({
     margin: 30,
     flexDirection: 'row-reverse',
     left: 100,
-    zIndex: -1  
   },
   icon: {
     fontSize: 24,
@@ -283,7 +282,8 @@ const styles = StyleSheet.create({
     borderWidth:1,
     zIndex: -1,
     marginTop: 30,
-
+    zIndex: -1,
+    marginTop: 30,
   },
   inside_main: {
     marginTop: 20,
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     height: '65%',
     marginTop: 'auto',
-    color: 'white'
+    color: 'white',
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
     // shadowColor: '#000000',

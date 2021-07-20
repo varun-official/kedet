@@ -16,6 +16,7 @@ import {
   ToastAndroid,
   Platform,
   AlertIOS,
+  Modal
 } from 'react-native';
 import {Input, FormControl, Button} from 'native-base';
 import db from "../firestore";
@@ -31,11 +32,102 @@ const EditSchool = ({navigation}) => {
   const [schoolIFSCCode,setIFSCCode] = React.useState("CNRB0004414");
   const [schoolUPI,setUPI] = React.useState("sahyadri@oksbi");
   const {user} = React.useContext(AuthContext);
+  const [image, setImage] = useState(null);
+  const [isVisible,setIsVisible] = useState(false);
+
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      compressImageQuality: 0.5,
+    }).then(image => {
+      console.log(image);
+      setImage(image.path);
+      setIsVisible(false);
+    });
+  };
+
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      compressImageQuality: 0.5,
+    }).then(image => {
+      console.log(image);
+      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      setImage(imageUri);
+      setIsVisible(false);
+    });
+  };
   return (
     <View style={styles.scroll_container}>
-      <ScrollView>
+      <ScrollView> 
+      <Modal animationType={'slide'} transparent={true} visible={isVisible}>
+          <View style={styles.panel}>
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.panelTitle}>Upload Photo</Text>
+              <Text style={styles.panelSubtitle}>
+                Choose Your Profile Picture
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.panelButton}
+              onPress={takePhotoFromCamera}>
+              <Text style={styles.panelButtonTitle}>Take Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.panelButton}
+              onPress={choosePhotoFromLibrary}>
+              <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.panelButton}
+              onPress={() => setIsVisible(false)}>
+              <Text style={styles.panelButtonTitle}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
         <View style={styles.inner_container}>
           <Text style={{fontSize: 20, color: 'white'}}>Edit School</Text>
+
+          {image ? (
+            <Image
+              source={{
+                uri: image,
+              }}
+              style={{
+                width: '100%',
+                marginTop: 10,
+                height: 150,
+              }}
+            />
+          ) : (
+            <Image
+              source={{
+                uri: 'https://firebase.google.com/downloads/brand-guidelines/PNG/logo-logomark.png',
+              }}
+              style={{
+                width: '100%',
+                marginTop: 10,
+                height: 150,
+              }}
+            />
+          )}
+
+          <TouchableOpacity onPress={() => setIsVisible(true)}>
+            <Text
+              style={{
+                marginTop: 15,
+                borderWidth: 1,
+                borderColor: 'red',
+                padding: 12,
+                fontSize: 20,
+                borderRadius: 5,
+                color:"white"
+              }}>
+              Take a Snap
+            </Text>
+          </TouchableOpacity>
           <FormControl style={styles.input}>
             {schoolName && <FormControl.Label>School Name:</FormControl.Label>}
             <Input
@@ -227,3 +319,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+

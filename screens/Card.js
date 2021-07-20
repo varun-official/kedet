@@ -49,7 +49,7 @@ function CardComponent(prop){
            New
          </Text>
       </View>}
-      <Stack space={1}  style={{marginLeft:10,marginTop:25}}>
+      <Stack space={1}  style={{marginLeft:10,marginTop:15}}>
         <View>
            <Text lineHeight={[5, 5, 7]} style={{fontSize:15}} color="white">
                  {prop.items.name}

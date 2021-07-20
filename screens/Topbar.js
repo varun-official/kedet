@@ -14,7 +14,7 @@ const topbarHeight = 95-StatusBar.currentHeight;
 function App() {
   StatusBar.setBackgroundColor("#00000f");
   return (
-    <View style={styles.homecontainer}>
+    <View style={styles.homecontainer1}>
       <Icon name="arrow-back" style={styles.arrowBack} />
       <View style={styles.searchBar}>
         <Text style={{fontSize:18,color:'#DFDFDF'}}>Type zipcode, school name</Text>

@@ -16,6 +16,20 @@ export const AuthProvider = ({children}) => {
     <AuthContext.Provider value={{
        user, 
        setUser,
+       login: async (email,password)=>{
+           try{
+             await firebase.auth().signInWithEmailAndPassword(email, password);
+           }catch(e){
+              console.log(e);
+              console.log(e);
+              const msg = e
+              if (Platform.OS === 'android') {
+                ToastAndroid.show(msg, ToastAndroid.SHORT)
+              } else {
+                AlertIOS.alert(msg);
+            }
+          }
+       },
        register: async (email,password)=>{
            try{
              await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -29,20 +43,7 @@ export const AuthProvider = ({children}) => {
              }
            }
        },
-       login: async (email,password)=>{
-           try{
-             await firebase.auth().signInWithEmailAndPassword(email, password);
-           }catch(e){
-             console.log(e);
-              console.log(e);
-              const msg = e
-              if (Platform.OS === 'android') {
-                ToastAndroid.show(msg, ToastAndroid.SHORT)
-              } else {
-                AlertIOS.alert(msg);
-           }
-           }
-       },
+       
        logout: async ()=>{
           try{
             await firebase.auth().signOut();
@@ -55,3 +56,4 @@ export const AuthProvider = ({children}) => {
     </AuthContext.Provider>
   );
 };
+

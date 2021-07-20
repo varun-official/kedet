@@ -1,4 +1,4 @@
-import {React,useState} from 'react';
+import React from 'react';
 import {
   View,
   Button,
@@ -7,15 +7,16 @@ import {
 } from 'react-native';
 import {AuthContext} from "../navigation/AuthProvider";
 
-export default function SignIn({navigation}) {
+export default function Login({navigation}) {
    
-   const [password,setPassword] = useState();
+   const [email,setEmail] = React.useState();
+   const [password,setPassword] = React.useState();
    const {login} = React.useContext(AuthContext);
    
    return (
-      <View style={styles.container}>
+      <View style={styles.container1}>
         <TextInput
-          style={styles.input}
+          style={styles.input1}
           value={email}
           placeholder='Email'
           autoCapitalize="none"
@@ -23,7 +24,7 @@ export default function SignIn({navigation}) {
           onChangeText={(email1)=>setEmail(email1)}
         />
         <TextInput
-          style={styles.input}
+          style={styles.input1}
           placeholder='Password'
           value={password}
           secureTextEntry={true}
@@ -37,12 +38,19 @@ export default function SignIn({navigation}) {
             login(email,password);
           }}
         />
+        
+        <Button
+          title='Not registered? Signup'
+          onPress={()=>{
+            navigation.navigate("Login");
+          }}
+        />
       </View>
     );
 }
 
 const styles = StyleSheet.create({
-  input: {
+  input1: {
     width: 350,
     height: 55,
     backgroundColor: '#42A5F5',
@@ -53,7 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
   },
-  container: {
+  container1: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
