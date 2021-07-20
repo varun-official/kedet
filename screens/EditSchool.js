@@ -12,17 +12,110 @@ import {
   TextInput,
   Dimensions,
   Stack,
-  TextArea,
+  Modal,
 } from 'react-native';
 
 import {Input, FormControl} from 'native-base';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const EditSchool = ({navigation}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [image, setImage] = useState(null);
+
+  const takePhotoFromCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      compressImageQuality: 0.5,
+    }).then(image => {
+      console.log(image);
+      setImage(image.path);
+      setIsVisible(false);
+    });
+  };
+
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      compressImageQuality: 0.5,
+    }).then(image => {
+      console.log(image);
+      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      setImage(imageUri);
+      setIsVisible(false);
+    });
+  };
+
   return (
     <View style={styles.scroll_container}>
       <ScrollView>
+        <Modal animationType={'slide'} transparent={true} visible={isVisible}>
+          <View style={styles.panel}>
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.panelTitle}>Upload Photo</Text>
+              <Text style={styles.panelSubtitle}>
+                Choose Your Profile Picture
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.panelButton}
+              onPress={takePhotoFromCamera}>
+              <Text style={styles.panelButtonTitle}>Take Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.panelButton}
+              onPress={choosePhotoFromLibrary}>
+              <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.panelButton}
+              onPress={() => setIsVisible(false)}>
+              <Text style={styles.panelButtonTitle}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
         <View style={styles.inner_container}>
           <Text style={{fontSize: 20, color: 'white'}}>Edit School</Text>
+
+          {image ? (
+            <Image
+              source={{
+                uri: image,
+              }}
+              style={{
+                width: '100%',
+                marginTop: 10,
+                height: 150,
+              }}
+            />
+          ) : (
+            <Image
+              source={{
+                uri: 'https://firebase.google.com/downloads/brand-guidelines/PNG/logo-logomark.png',
+              }}
+              style={{
+                width: '100%',
+                marginTop: 10,
+                height: 150,
+              }}
+            />
+          )}
+
+          <TouchableOpacity onPress={() => setIsVisible(true)}>
+            <Text
+              style={{
+                marginTop: 15,
+                borderWidth: 1,
+                borderColor: 'red',
+                padding: 12,
+                fontSize: 20,
+                borderRadius: 5,
+              }}>
+              Take a Snap
+            </Text>
+          </TouchableOpacity>
+
           <FormControl style={styles.input}>
             <FormControl.Label>School Name:</FormControl.Label>
             <Input
@@ -88,6 +181,16 @@ const EditSchool = ({navigation}) => {
               color="white"
             />
           </FormControl>
+          <FormControl style={styles.input}>
+            <FormControl.Label>School Description:</FormControl.Label>
+            <Input
+              variant="outline"
+              placeholder="Government higher primary school"
+              color="white"
+              multiline={true}
+              numberOfLines={5}
+            />
+          </FormControl>
           <View style={{flexDirection: 'row'}}>
             <View
               style={{
@@ -141,6 +244,14 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 20,
   },
+  input1: {
+    marginTop: 20,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 10,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
   panelInputButtonC: {
     borderWidth: 2,
     borderColor: 'red',
@@ -161,5 +272,34 @@ const styles = StyleSheet.create({
     width: 130,
     height: 60,
     textAlign: 'center',
+  },
+  panel: {
+    padding: 20,
+    backgroundColor: '#FFFFFF',
+    paddingTop: 20,
+    width: '100%',
+    marginTop: 'auto',
+  },
+  panelTitle: {
+    fontSize: 27,
+    height: 35,
+  },
+  panelSubtitle: {
+    fontSize: 14,
+    color: 'gray',
+    height: 30,
+    marginBottom: 10,
+  },
+  panelButton: {
+    padding: 13,
+    borderRadius: 10,
+    backgroundColor: '#2e64e5',
+    alignItems: 'center',
+    marginVertical: 7,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });

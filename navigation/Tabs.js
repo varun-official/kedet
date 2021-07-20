@@ -124,7 +124,7 @@ const Tabs = () => {
           }}></Tab.Screen>
         <Tab.Screen
           name="Notice"
-          component={Notice}
+          component={MissingChild}
           options={{
             tabBarIcon: ({focused}) => (
               <View

@@ -1,5 +1,3 @@
-{
-  /* 
 import {Avatar} from 'native-base';
 import React, {useState} from 'react';
 import {
@@ -26,6 +24,7 @@ const MissingChild = ({navigation}) => {
       height: 400,
       compressImageQuality: 0.5,
     }).then(image => {
+      console.log(image);
       setImage(image.path);
     });
   };
@@ -178,5 +177,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-*/
-}
