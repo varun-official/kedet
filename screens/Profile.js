@@ -14,30 +14,45 @@ import {
   Dimensions,
   Modal,
 } from 'react-native';
-
-import {Input, FormControl} from 'native-base';
-
+import db from "../firestore";
+import {AuthContext} from "../navigation/AuthProvider";
+import {Input, FormControl, Button} from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Feather';
 import Animated from 'react-native-reanimated';
 
 const height = Dimensions.get('window').height;
 
-const Profile = ({navigation}) => {
+const Profile = ({navigation,route}) => {
   const sheetRef = React.useRef(null);
   const fall = React.useRef(new Animated.Value(1)).current;
   const [nobench, setNobench] = useState(1);
+  const [nodesk, setNodesk] = useState(1);
+  const [notable, setNotable] = useState(1);
+  const [noboard, setNoboard] = useState(1);
+  
   const [isHead, setIsHead] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-
-  const incc = () => {
-    setNobench(nobench + 1);
-  };
-  const decc = () => {
-    setNobench(nobench - 1);
-  };
-
+  const {user,logout} = React.useContext(AuthContext);
+  const [pincode,setPinCode]=React.useState(null);
+  
+ 
+  React.useEffect(()=>{
+    db.collection("users").where('email',"==",user.email).get()
+    .then((docs)=>{
+        docs.forEach((doc)=>{
+           console.log(doc.data());
+           if(doc.data().schoolId !== undefined){
+              setPinCode(doc.data().schoolId); 
+              console.log(pincode);
+           }
+        })
+    }).catch((e)=>{
+       console.log(e);
+    });                   
+  },[]);
+  
   return (
-    
     <ScrollView
       contentContainerStyle={
         isVisible ? styles.scroll_container1 : styles.scroll_container
@@ -52,7 +67,7 @@ const Profile = ({navigation}) => {
           </View>
           <View style={styles.panelInput}>
             <Text style={styles.panelInputText}>Bench</Text>
-            <TouchableOpacity>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>{if(nobench >= 1)setNobench(nobench-1)}}>
               <Text style={styles.panelInputButton1}>-</Text>
             </TouchableOpacity>
             <TextInput
@@ -61,70 +76,91 @@ const Profile = ({navigation}) => {
               style={styles.panelInputInput}>
               {nobench}
             </TextInput>
-            <TouchableOpacity>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>setNobench(nobench+1)}>
               <Text style={styles.panelInputButton2}>+</Text>
             </TouchableOpacity>
           </View>
+          
           <View style={styles.panelInput}>
             <Text style={styles.panelInputText}>Desk</Text>
-            <Pressable>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>{if(nodesk >= 1)setNodesk(nodesk-1)}}>
               <Text style={styles.panelInputButton1}>-</Text>
-            </Pressable>
+            </TouchableOpacity>
             <TextInput
               keyboardType="numeric"
               caretHidden={true}
               style={styles.panelInputInput}>
-              0
+              {nodesk}
             </TextInput>
-            <Pressable>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>setNodesk(nodesk+1)}>
               <Text style={styles.panelInputButton2}>+</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
+          
           <View style={styles.panelInput}>
             <Text style={styles.panelInputText}>Table</Text>
-            <TouchableOpacity>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>{if(notable >= 1)setNotable(notable-1)}}>
               <Text style={styles.panelInputButton1}>-</Text>
             </TouchableOpacity>
             <TextInput
               keyboardType="numeric"
               caretHidden={true}
               style={styles.panelInputInput}>
-              0
+              {notable}
             </TextInput>
-            <TouchableOpacity>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>setNotable(notable+1)}>
               <Text style={styles.panelInputButton2}>+</Text>
             </TouchableOpacity>
           </View>
+          
           <View style={styles.panelInput}>
             <Text style={styles.panelInputText}>Board</Text>
-            <TouchableOpacity>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>{if(noboard >= 1)setNoboard(noboard-1)}}>
               <Text style={styles.panelInputButton1}>-</Text>
             </TouchableOpacity>
             <TextInput
               keyboardType="numeric"
               caretHidden={true}
               style={styles.panelInputInput}>
-              0
+              {noboard}
             </TextInput>
-            <TouchableOpacity>
+            <TouchableOpacity hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }} onPress={()=>setNoboard(noboard+1)}>
               <Text style={styles.panelInputButton2}>+</Text>
             </TouchableOpacity>
           </View>
+          
           <View style={styles.panelInputbottom}>
-            <TouchableOpacity onPress={() => setIsVisible(false)}>
+            <TouchableOpacity onPress={() => {
+                setIsVisible(false)
+             }}>
               <Text style={styles.panelInputButtonc}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setIsVisible(false)}>
+            <TouchableOpacity onPress={() => {
+                 db.collection("school").doc(pincode).update({
+                     bench:nobench,
+                     desk:nodesk,
+                     table:notable,
+                     board:noboard   
+                 }).then(() => {
+                   console.log("Successfully added requirement");
+                 })
+                 .catch((error) => {
+                   console.error("Error writing document: ", error);
+                });
+               setIsVisible(false)
+             }}>
               <Text style={styles.panelInputButtonv}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-      <TouchableOpacity  style={{marginLeft:"50%",marginTop:-55}}>
-       <Icon name="bell" style={styles.topIcon} />
+      <TouchableOpacity style={{marginTop:-55,marginLeft: '50%', }} onPress={()=>{
+        logout();
+      }}>
+        <Icon name="power" style={styles.topIcon}/>
       </TouchableOpacity>
-      <TouchableOpacity style={{marginLeft:"80%",marginTop:-25}}>
-       <Icon name="users" style={styles.topIcon} />
+      <TouchableOpacity style={{marginLeft: '80%', marginTop: -25}}>
+        <Icon name="users" style={styles.topIcon} />
       </TouchableOpacity>
       <View style={styles.inner_container}>
         {isHead ? (
@@ -142,8 +178,9 @@ const Profile = ({navigation}) => {
         <FormControl style={styles.input}>
           <FormControl.Label><Text style={{color:"#D2D1D1"}}>Name:</Text></FormControl.Label>
           <Input
+            editable={false}
             variant="outline"
-            placeholder="Varun"
+            placeholder="Enter name"
             _light={{
               placeholderTextColor: 'white',
             }}
@@ -156,7 +193,8 @@ const Profile = ({navigation}) => {
           <FormControl.Label><Text style={{color:"#D2D1D1"}}>Email:</Text></FormControl.Label>
           <Input
             variant="outline"
-            placeholder="varunvadda99@gmail.com"
+            editable={false}
+            placeholder={user.email}
             _light={{
               placeholderTextColor: 'white',
             }}
@@ -166,8 +204,10 @@ const Profile = ({navigation}) => {
           />
         </FormControl>
         <FormControl style={styles.input1}>
+
           <FormControl.Label><Text style={{color:"white"}}>Phone Number:</Text></FormControl.Label>
           <Input
+            editable={false}
             variant="outline"
             placeholder="8548072149"
             _light={{
@@ -179,8 +219,8 @@ const Profile = ({navigation}) => {
           />
         </FormControl>
       </View>
-      {isHead && (
-        <View style={{marginTop:20}}>
+      {isHead && pincode !== null && (
+        <View style={{marginTop: 30}}>
           <TouchableOpacity onPress={() => setIsVisible(true)}>
             <Text
               style={{
@@ -189,8 +229,8 @@ const Profile = ({navigation}) => {
                 borderColor: '#0D0D0D',
                 padding: 10,
                 backgroundColor: '#111515',
-                color:'white',
-                borderRadius:5
+                color: 'white',
+                borderRadius: 5,
               }}>
               + Add Requirement
             </Text>
@@ -208,7 +248,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2C2E32',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   scroll_container1: {
     flex: 1,
@@ -216,7 +256,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     opacity: 0.06,
-    
   },
 
   container_next: {
@@ -225,7 +264,7 @@ const styles = StyleSheet.create({
     margin: 30,
     flexDirection: 'row-reverse',
     left: 100,
-    zIndex:-1
+    zIndex: -1  
   },
   icon: {
     fontSize: 24,
@@ -241,25 +280,27 @@ const styles = StyleSheet.create({
     zIndex:-1,
     marginTop:30,
     borderColor:'grey',
-    borderWidth:1
+    borderWidth:1,
+    zIndex: -1,
+    marginTop: 30,
+
   },
   inside_main: {
     marginTop: 20,
     flexDirection: 'row',
- 
   },
   inside_main_text1: {
     fontSize: 23,
     left: -40,
     top: 15,
-    color:"white"
+    color: 'white',
   },
   inside_main_text2: {
     fontSize: 20,
     backgroundColor: '#242932',
     padding: 12,
     borderRadius: 10,
-    color:"white"
+    color: 'white',
   },
   inside_main_text3: {
     fontSize: 20,
@@ -270,7 +311,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 20,
-    width: '90%'
+    width: '90%',
   },
   input1: {
     marginTop: 30,
@@ -289,22 +330,22 @@ const styles = StyleSheet.create({
   },
   panelHeader: {
     alignItems: 'center',
-    color:"white"
+    color: 'white',
   },
   panelHandle: {
     width: 40,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#00000040',
-    marginBottom: 10
+    marginBottom: 10,
   },
   panel: {
     padding: 20,
     backgroundColor: '#111515',
     paddingTop: 20,
-    height: '60%',
+    height: '65%',
     marginTop: 'auto',
-    color:"white"
+    color: 'white'
     // borderTopLeftRadius: 20,
     // borderTopRightRadius: 20,
     // shadowColor: '#000000',
@@ -315,7 +356,7 @@ const styles = StyleSheet.create({
   panelTitle: {
     fontSize: 27,
     height: 35,
-    color:"#D9D2D2"
+    color: '#D9D2D2',
   },
   panelSubtitle: {
     fontSize: 14,
@@ -328,6 +369,7 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'space-around',
     marginBottom: 40,
+    zIndex:3
   },
   panelInputlast: {
     flexDirection: 'row',
@@ -343,7 +385,7 @@ const styles = StyleSheet.create({
   },
   panelInputText: {
     fontSize: 20,
-    color:"#D9D2D2"
+    color: '#D9D2D2',
   },
   panelInputButton1: {
     borderWidth: 1,
@@ -357,7 +399,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: -50,
-    color:"#D3CFCF"
+    color: '#D3CFCF',
   },
 
   panelInputButton2: {
@@ -372,7 +414,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: -40,
-    color:"#D3CFCF"
+    color: '#D3CFCF',
   },
   panelInputInput: {
     width: 80,
@@ -382,7 +424,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'red',
     borderRadius: 5,
-    color:"#D3CFCF"
+    color: '#D3CFCF',
   },
   panelInputButtonc: {
     borderWidth: 2,
@@ -409,5 +451,10 @@ const styles = StyleSheet.create({
     color:"#90B8F8",
     zIndex:3,
     fontSize:24
-  }
+  },
+  topIcon: {
+    color: '#90B8F8',
+    zIndex: 3,
+    fontSize: 24,
+  },
 });

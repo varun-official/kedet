@@ -1,16 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import auth from '@react-native-firebase/auth';
+import * as firebase from "firebase/app";
 import Tabs from "./navigation/Tabs";
 import {NavigationContainer} from '@react-navigation/native';
-
-
+import Providers from './navigation';
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Tabs />
-    </NavigationContainer>
-  );
+  return <Providers />;
 };
 
 export default App;

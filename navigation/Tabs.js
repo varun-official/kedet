@@ -25,6 +25,7 @@ import Notice from '../screens/Notice';
 import Profile from '../screens/Profile';
 import Socialmedia from '../screens/Socialmedia';
 import EditSchool from '../screens/EditSchool';
+import MissingChild from '../screens/MissingChild';
 
 const stackScrenHome = () => {
   return (
@@ -62,7 +63,7 @@ const Tabs = () => {
             bottom: 0,
             elevation: 0,
             backgroundColor: '#000000',
-            height: 60
+            height: 60,
           },
         }}>
         <Tab.Screen
@@ -123,7 +124,7 @@ const Tabs = () => {
           }}></Tab.Screen>
         <Tab.Screen
           name="Notice"
-          component={Notice}
+          component={MissingChild}
           options={{
             tabBarIcon: ({focused}) => (
               <View
@@ -168,12 +169,12 @@ const Tabs = () => {
                     color: focused ? 'white' : '#adadad',
                   }}
                 />
-             <Text
+                <Text
                   style={{
                     color: focused ? 'white' : '#adadad',
                     fontSize: 12,
-                   }}>
-            Profile
+                  }}>
+                  Profile
                 </Text>
               </View>
             ),

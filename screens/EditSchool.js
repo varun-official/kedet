@@ -13,100 +13,169 @@ import {
   Dimensions,
   Stack,
   TextArea,
+  ToastAndroid,
+  Platform,
+  AlertIOS,
 } from 'react-native';
-
-import {Input, FormControl} from 'native-base';
+import {Input, FormControl, Button} from 'native-base';
+import db from "../firestore";
+import {AuthContext} from "../navigation/AuthProvider";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EditSchool = ({navigation}) => {
+  const [schoolName,setSchoolName] = React.useState("Government higher primary school");
+  const [schoolAddress,setSchoolAddress] = React.useState("Kapikad, Mangalore - 575004");
+  const [schoolPinCode,setPinCode] = React.useState("575004");
+  const [schoolMedium,setMedium] = React.useState("Kannada");
+  const [schoolBankAccntNo,setBankAccntNo] = React.useState("2015101004414");
+  const [schoolIFSCCode,setIFSCCode] = React.useState("CNRB0004414");
+  const [schoolUPI,setUPI] = React.useState("sahyadri@oksbi");
+  const {user} = React.useContext(AuthContext);
   return (
     <View style={styles.scroll_container}>
       <ScrollView>
         <View style={styles.inner_container}>
-          <Text style={{fontSize: 20,color:"white"}}>Edit School</Text>
+          <Text style={{fontSize: 20, color: 'white'}}>Edit School</Text>
           <FormControl style={styles.input}>
-            <FormControl.Label>School Name:</FormControl.Label>
+            {schoolName && <FormControl.Label>School Name:</FormControl.Label>}
             <Input
               variant="outline"
-              placeholder="Government higher primary school"
-              value="Government higher primary school"
-              
+              value={schoolName}
+              placeholder="Enter school name"
+              onChangeText={(val)=>setSchoolName(val)}
               color="white"
             />
           </FormControl>
           <FormControl style={styles.input}>
-            <FormControl.Label>School Address:</FormControl.Label>
+            {schoolAddress && <FormControl.Label>School Address:</FormControl.Label>}
             <Input
               variant="outline"
-              placeholder="enter the school name"
               color="white"
-              value="Kapikad, Mangalore - 575004"
-              
+              placeholder="Enter school address"
+              value={schoolAddress}
+              onChangeText={(val)=>setSchoolAddress(val)}
             />
           </FormControl>
           <FormControl style={styles.input}>
-            <FormControl.Label>School Medium:</FormControl.Label>
+            {schoolPinCode && <FormControl.Label>School pinCode:</FormControl.Label>}
             <Input
               variant="outline"
-              placeholder="Government higher primary school"
-              value="Kannada"
-              
               color="white"
+              keyboardType="numeric"
+              placeholder="Enter school pincode"
+              value={schoolPinCode}
+              onChangeText={(val)=>setPinCode(val)}
             />
           </FormControl>
           <FormControl style={styles.input}>
-            <FormControl.Label>School Bank Acc.No:</FormControl.Label>
+            {schoolMedium && <FormControl.Label>School Medium:</FormControl.Label>}
             <Input
               variant="outline"
-              placeholder="Government higher primary school"
-              value="2015101004414"
-              
-              color="white"
-            />
-          </FormControl>
-          <FormControl style={styles.input}>
-            <FormControl.Label color="#D9D2D2">School Bank IFSC Code:</FormControl.Label>
-            <Input
-              variant="outline"
-              placeholder="Government higher primary school"
-              value="CNRB0004414"
-        
+              placeholder="Enter school medium"
+              value={schoolMedium}
+              onChangeText={(val)=>setMedium(val)}
               color="white"
             />
           </FormControl>
           <FormControl style={styles.input}>
-            <FormControl.Label>School UPI:</FormControl.Label>
+            {schoolBankAccntNo && <FormControl.Label>School Bank Acc.No:</FormControl.Label>}
             <Input
               variant="outline"
-              placeholder="Government higher primary school"
-              value="sahyadri@oksbi"
-              
+              value={schoolBankAccntNo}
+              keyboardType="numeric"
+              onChangeText={(val)=>setsetBankAccntNo(val)}
+              color="white"
+              placeholder="Enter school bank account number"
+              onChangeText={(val)=>setBankAccntNo(val)}
+            />
+          </FormControl>
+          <FormControl style={styles.input}>
+            {schoolIFSCCode && <FormControl.Label color="#D9D2D2">
+              School Bank IFSC Code:
+            </FormControl.Label>}
+            <Input
+              variant="outline"
+              placeholder="Enter bank IFSC code"
+              onChangeText={(val)=>setIFSCCode(val)}
+              value={schoolIFSCCode}
               color="white"
             />
           </FormControl>
-         <View style={{flexDirection:"row"}}> 
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingTop: 30,
-              marginBottom: 0,
-            }}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Profile")}>
-              <Text style={styles.panelInputButtonC}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingTop: 30,
-              marginBottom: 50,
-              marginLeft:15
-            }}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Profile")}>
-              <Text style={styles.panelInputButtonv}>Save</Text>
-            </TouchableOpacity>
+          <FormControl style={styles.input}>
+            {schoolUPI && <FormControl.Label>School UPI:</FormControl.Label>}
+            <Input
+              variant="outline"
+              placeholder="Enter UPI ID"
+              value={schoolUPI}
+              onChangeText={(val)=>setUPI(val)}
+              color="white"
+            />
+          </FormControl>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingTop: 30,
+                marginBottom: 0,
+              }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                <Text style={styles.panelInputButtonC}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingTop: 30,
+                marginBottom: 50,
+                marginLeft: 15,
+              }}>
+              <TouchableOpacity onPress={() => {
+                  if(schoolName && schoolAddress && schoolPinCode && schoolMedium && schoolBankAccntNo && schoolIFSCCode && schoolUPI){                
+                      AsyncStorage.setItem('@pincode', schoolPinCode); 
+                      db.collection("school").doc(schoolPinCode).set({
+                          name: schoolName,
+                          address: schoolAddress,
+                          pincode: schoolPinCode,
+                          medium:schoolMedium,
+                          accountNo:schoolBankAccntNo,
+                          ifscCode:schoolIFSCCode,
+                          upiId:schoolUPI
+                      })
+                      .then(() => {
+                          const d = new Date();
+                          console.log("School document successfully updated at " + d.toString());
+                          db.collection("users").where('email',"==",user.email).get()
+                          .then((querySnapshot) => {
+                           console.log("User document successfully written at " + d.toString());
+                           querySnapshot.forEach((doc) => {
+                             doc.ref.update({
+                                schoolId:schoolPinCode
+                              });
+                         });
+                     })
+                      .catch((error) => {
+                         console.log("Error getting documents: ", error);
+                      });
+                       })
+                       .catch((error) => {
+                          console.error("Error writing document: ", error);
+                      });
+                      navigation.navigate('Profile');
+                  }else{
+                      const msg = "Fields cannot be empty"
+                      if (Platform.OS === 'android') {
+                         ToastAndroid.show(msg, ToastAndroid.SHORT)
+                      } else {
+                         AlertIOS.alert(msg);
+                      }
+                  }
+                }
+              }>
+                <Text style={styles.panelInputButtonv}>Save</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        </View> 
       </ScrollView>
     </View>
   );
@@ -120,7 +189,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginBottom: 0
+    marginBottom: 0,
     // zIndex:3000
   },
   inner_container: {
