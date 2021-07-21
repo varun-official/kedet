@@ -21,7 +21,6 @@ export const AuthProvider = ({children}) => {
              await firebase.auth().signInWithEmailAndPassword(email, password);
            }catch(e){
               console.log(e);
-              console.log(e);
               const msg = e
               if (Platform.OS === 'android') {
                 ToastAndroid.show(msg, ToastAndroid.SHORT)

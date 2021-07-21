@@ -11,12 +11,14 @@ import {
   Button,
   Toast,
   AlertIOS,
-  Platform
+  Platform,
+  ToastAndroid,
 } from 'react-native';
 
 import ImagePicker from 'react-native-image-crop-picker';
 import db from "../firestore";
 import {Input, FormControl} from 'native-base';
+import storageMissingChild from "../storageMissingChild";
 
 const MissingChild = ({navigation}) => {
   const [image, setImage] = useState(null);
@@ -105,32 +107,34 @@ const MissingChild = ({navigation}) => {
               <Text style={styles.panelInputButtonC}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-              if(landMark && pincode){
-                 db.collection("children").add({
-                    name:(childName !== undefined && childName !== null ? childName : " "),
-                    landMark:landMark,
-                    pincode:pincode,
-                    image:image
-                 })
-                 .then(() => {
-                   const d = new Date();
-                   console.log("School document successfully updated at " + d.toString());   
-                  })
-                 .catch((error) => {
-                   console.log("Error getting documents: ", error);
-                });
-                navigation.navigate("Home");
-               }else{
+              if(landMark && pincode && image!==undefined){ 
+                 storageMissingChild(Date.now(),image).then((url)=>{
+                   db.collection("children").add({
+                      name:(childName !== undefined && childName !== null ? childName : " "),
+                      landMark:landMark,
+                      pincode:pincode,
+                      image:url == undefined ? null : url
+                   })
+                   .then(() => {
+                      const d = new Date();
+                      console.log("School document successfully updated at " + d.toString());   
+                    })
+                    .catch((error) => {
+                       console.log("Error getting documents: ", error);
+                    });
+                    navigation.navigate("Home");
+                    setChildName();
+                    setLandMark();
+                    setPinCode();
+                }).catch(err=>console.log(err));
+              }else{
                   const msg = "Fields cannot be empty"
                   if (Platform.OS === 'android') {
                      ToastAndroid.show(msg, ToastAndroid.SHORT)
                   } else {
                     AlertIOS.alert(msg);
                   }
-               }
-               setChildName();
-               setLandMark();
-               setPinCode();
+              }
             }}>
               <Text style={styles.panelInputButtonv}>Save</Text>
             </TouchableOpacity>

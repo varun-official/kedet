@@ -15,40 +15,34 @@ import {NativeBaseProvider} from 'native-base';
 import {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import _ from 'lodash';
+import db from "../firestore";
+import Loading from './Loading';
 
-const topbarHeight = 92 - StatusBar.currentHeight;
 
 function App({navigation}) {
+  const topbarHeight = 92 - StatusBar.currentHeight;   
   const [search, setSearch] = useState('');
-  const [school, setSchool] = useState([
-    {
-      name: 'Government higher primary school',
-      place: 'Kapikad, Mangalore ',
-      medium: 'Malayalam',
-      mediumColor: '#1556FD',
-      new: true,
-      id: 1,
-      pincode: '575007',
-    },
-    {
-      name: 'Govt. Primary School',
-      place: 'Cherkala, Kasargod',
-      medium: 'Kannada',
-      mediumColor: 'red',
-      new: false,
-      id: 2,
-      pincode: '570004',
-    },
-    {
-      name: 'Govt. Primary School',
-      place: 'Cherkala, Kasargod',
-      medium: 'Kannada',
-      mediumColor: 'red',
-      new: false,
-      id: 3,
-      pincode: '570005',
-    },
-  ]);
+  const [school, setSchool] = useState([]);    
+  const [searchedSchool, setSearchedSchool] = useState(school);
+  
+  React.useEffect(()=>{
+    db.collection('school')
+    .get()
+    .then(querySnapshot => {
+      const documents = querySnapshot.docs.map(doc => doc.data())
+      documents.map((item,index)=>{
+         item['id'] = index;
+         if(index%2)item['color'] = 'red';
+         else item['color'] = '#1556FD';
+      });
+      documents.sort((a,b)=>{
+         return b.date - a.date
+      });
+      setSchool(documents);
+      setSearchedSchool(documents);
+    })
+  },[]);
+ 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   React.useEffect(() => {
@@ -129,8 +123,9 @@ const styles = StyleSheet.create({
  });
   
   
-  const [searchedSchool, setSearchedSchool] = useState(school);
-
+  console.log(searchedSchool);
+  
+  if(searchedSchool == undefined || searchedSchool == null) return <Loading/>
   const contains = ({place, pincode}, query) => {
     if (place.toLowerCase().includes(query) || pincode.includes(query))
       return true;
@@ -176,7 +171,7 @@ const styles = StyleSheet.create({
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('SchoolDesc', {
-                    n: item.name,
+                    n: item,
                   })
                 }>
                 <Card item={item} />

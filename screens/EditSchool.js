@@ -18,31 +18,65 @@ import {
   AlertIOS,
   Modal
 } from 'react-native';
+import firebase from "firebase";
+import "firebase/storage";
 import {Input, FormControl, Button} from 'native-base';
+import storageSchool from "../storageSchool";
+import ImagePicker from 'react-native-image-crop-picker';
 import db from "../firestore";
 import {AuthContext} from "../navigation/AuthProvider";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const EditSchool = ({navigation}) => {
-  const [schoolName,setSchoolName] = React.useState("Government higher primary school");
-  const [schoolAddress,setSchoolAddress] = React.useState("Kapikad, Mangalore - 575004");
-  const [schoolPinCode,setPinCode] = React.useState("575004");
-  const [schoolMedium,setMedium] = React.useState("Kannada");
-  const [schoolBankAccntNo,setBankAccntNo] = React.useState("2015101004414");
-  const [schoolIFSCCode,setIFSCCode] = React.useState("CNRB0004414");
-  const [schoolUPI,setUPI] = React.useState("sahyadri@oksbi");
+import Loading from './Loading';
+const EditSchool = ({navigation,route}) => {
+  const [schoolName,setSchoolName] = React.useState(null);
+  const [schoolAddress,setSchoolAddress] =React.useState(null);
+  const [schoolPinCode,setPinCode] = React.useState(null);
+  const [schoolMedium,setMedium] = React.useState(null);
+  const [schoolBankAccntNo,setBankAccntNo] = React.useState(null);
+  const [schoolIFSCCode,setIFSCCode] = React.useState(null);
+  const [schoolUPI,setUPI] = React.useState(null);
   const {user} = React.useContext(AuthContext);
+  const [imageURL,setImageURL] = useState(null);
+  const [desc,setDesc] = React.useState(null);
   const [image, setImage] = useState(null);
+ 
   const [isVisible,setIsVisible] = useState(false);
+  const [loading,setLoading] = useState(true);
+  const {pinCode} = route.params;
+  
+  React.useEffect(()=>{
+    db.collection("school").doc(pinCode).get()
+    .then((doc)=>{
+       if(doc.exists){
+          setSchoolName(doc.data().name);
+          setSchoolAddress(doc.data().address);
+          setPinCode(doc.data().pincode);
+          setMedium(doc.data().medium);
+          setBankAccntNo(doc.data().accountNo);
+          setIFSCCode(doc.data().ifscCode);
+          setUPI(doc.data().upiId);
+          setImage(doc.data().image);
+          setImage(doc.data().desc);
+       }
+       setLoading(false);
+        
+    }).catch((e)=>{
+       console.log(e);
+    });               
+        
+  },[]);
 
+  if(loading) return <Loading/>
+    
+    
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
       compressImageQuality: 0.5,
+      includeBase64:true
     }).then(image => {
-      console.log(image);
-      setImage(image.path);
+      setImage(image);
       setIsVisible(false);
     });
   };
@@ -52,16 +86,17 @@ const EditSchool = ({navigation}) => {
       width: 300,
       height: 300,
       compressImageQuality: 0.5,
+      includeBase64:true
     }).then(image => {
-      console.log(image);
-      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-      setImage(imageUri);
+      setImage(image);
       setIsVisible(false);
     });
   };
+ 
   return (
+      
     <View style={styles.scroll_container}>
-      <ScrollView> 
+      <ScrollView>
       <Modal animationType={'slide'} transparent={true} visible={isVisible}>
           <View style={styles.panel}>
             <View style={{alignItems: 'center'}}>
@@ -93,7 +128,7 @@ const EditSchool = ({navigation}) => {
           {image ? (
             <Image
               source={{
-                uri: image,
+                uri: image.path,
               }}
               style={{
                 width: '100%',
@@ -203,6 +238,17 @@ const EditSchool = ({navigation}) => {
               color="white"
             />
           </FormControl>
+             <FormControl style={styles.input}>
+            <FormControl.Label>School Description:</FormControl.Label>
+            <Input
+              variant="outline"
+              placeholder="Enter school description"
+              color="white"
+              value={desc}
+              multiline={true}
+              numberOfLines={5}
+            />
+          </FormControl>
           <View style={{flexDirection: 'row'}}>
             <View
               style={{
@@ -222,37 +268,78 @@ const EditSchool = ({navigation}) => {
                 marginLeft: 15,
               }}>
               <TouchableOpacity onPress={() => {
-                  if(schoolName && schoolAddress && schoolPinCode && schoolMedium && schoolBankAccntNo && schoolIFSCCode && schoolUPI){                
-                      AsyncStorage.setItem('@pincode', schoolPinCode); 
+                  if(schoolName && schoolAddress && schoolPinCode && schoolMedium && schoolBankAccntNo && schoolIFSCCode && schoolUPI && desc){                
+                      AsyncStorage.setItem('@pincode', schoolPinCode);
+                       
+                      if(image !== null && image.path !== undefined && image.path !== null){            
+                          storageSchool(image.path,schoolPinCode).then((url)=>{
+                               db.collection("school").doc(schoolPinCode).set({
+                                    name: schoolName,
+                                    address: schoolAddress,
+                                    pincode: schoolPinCode,
+                                    medium:schoolMedium,
+                                    accountNo:schoolBankAccntNo,
+                                    ifscCode:schoolIFSCCode,
+                                    upiId:schoolUPI,
+                                    desc:desc,
+                                    image:url,
+                                    date: Date().now()                            
+                                },{merge:true})
+                                .then(() => {
+                                    const d = new Date();
+                                    console.log("School document successfully updated at " + d.toString());
+                                    db.collection("users").where('email',"==",user.email).get()
+                                      .then((querySnapshot) => {
+                                           console.log("User document successfully written at " + d.toString());
+                                           querySnapshot.forEach((doc) => {
+                                           doc.ref.update({
+                                                schoolId:schoolPinCode
+                                           });
+                                        });
+                                      })
+                                      .catch((error) => {
+                                          console.log("Error getting documents1: ", error);
+                                      })
+                                    })
+                                 .catch((error) => {
+                                    console.error("Error writing document2: ", error);
+                                 })
+                              })
+                          navigation.navigate('Profile',{refresh:true});
+                          return;
+                      }
                       db.collection("school").doc(schoolPinCode).set({
-                          name: schoolName,
-                          address: schoolAddress,
-                          pincode: schoolPinCode,
-                          medium:schoolMedium,
-                          accountNo:schoolBankAccntNo,
-                          ifscCode:schoolIFSCCode,
-                          upiId:schoolUPI
-                      })
-                      .then(() => {
-                          const d = new Date();
-                          console.log("School document successfully updated at " + d.toString());
-                          db.collection("users").where('email',"==",user.email).get()
-                          .then((querySnapshot) => {
-                           console.log("User document successfully written at " + d.toString());
-                           querySnapshot.forEach((doc) => {
-                             doc.ref.update({
-                                schoolId:schoolPinCode
-                              });
-                         });
-                     })
-                      .catch((error) => {
-                         console.log("Error getting documents: ", error);
-                      });
-                       })
-                       .catch((error) => {
-                          console.error("Error writing document: ", error);
-                      });
-                      navigation.navigate('Profile');
+                                    name: schoolName,
+                                    address: schoolAddress,
+                                    pincode: schoolPinCode,
+                                    medium:schoolMedium,
+                                    accountNo:schoolBankAccntNo,
+                                    ifscCode:schoolIFSCCode,
+                                    upiId:schoolUPI,
+                                    image:image,
+                                    desc:desc,
+                                    date: Date().now()                   
+                                },{merge:true})
+                                .then(() => {
+                                    const d = new Date();
+                                    console.log("School document successfully updated at " + d.toString());
+                                    db.collection("users").where('email',"==",user.email).get()
+                                      .then((querySnapshot) => {
+                                           console.log("User document successfully written at " + d.toString());
+                                           querySnapshot.forEach((doc) => {
+                                           doc.ref.update({
+                                                schoolId:schoolPinCode
+                                           });
+                                        });
+                                      })
+                                      .catch((error) => {
+                                          console.log("Error getting documents1: ", error);
+                                      })
+                                    })
+                                 .catch((error) => {
+                                    console.error("Error writing document2: ", error);
+                                 })
+                      navigation.navigate('Profile',{refresh:true});
                   }else{
                       const msg = "Fields cannot be empty"
                       if (Platform.OS === 'android') {
@@ -261,15 +348,14 @@ const EditSchool = ({navigation}) => {
                          AlertIOS.alert(msg);
                       }
                   }
-                }
-              }>
+                }}>
                 <Text style={styles.panelInputButtonv}>Save</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </ScrollView>
-    </View>
+     </View>
   );
 };
 
@@ -297,6 +383,14 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 20,
   },
+  input1: {
+    marginTop: 20,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 10,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
   panelInputButtonC: {
     borderWidth: 2,
     borderColor: 'red',
@@ -318,5 +412,35 @@ const styles = StyleSheet.create({
     height: 60,
     textAlign: 'center',
   },
+  panel: {
+    padding: 20,
+    backgroundColor: '#FFFFFF',
+    paddingTop: 20,
+    width: '100%',
+    marginTop: 'auto',
+  },
+  panelTitle: {
+    fontSize: 27,
+    height: 35,
+  },
+  panelSubtitle: {
+    fontSize: 14,
+    color: 'gray',
+    height: 30,
+    marginBottom: 10,
+  },
+  panelButton: {
+    padding: 13,
+    borderRadius: 10,
+    backgroundColor: '#2e64e5',
+    alignItems: 'center',
+    marginVertical: 7,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });
+
 

@@ -29,6 +29,7 @@ const SchoolDesc = ({navigation, route}) => {
   };
 
   const {n} = route.params;
+  console.log(n);
 
   const Progress = ({step, steps, height, name}) => {
     const [width, setWidth] = useState(0);
@@ -94,10 +95,10 @@ const SchoolDesc = ({navigation, route}) => {
       <StatusBar translucent backgroundColor="transparent" />
       <ScrollView style={styles.container}>
         <Image
-          source={require('../assets/gov_school.png')}
+          source={{uri: n.image}} 
           style={styles.image}
         />
-        <Text style={styles.hedding_text}>{n}</Text>
+        <Text style={styles.hedding_text}>{n.name}</Text>
         <Text style={styles.hedding_text_kan}>ಸರ್ಕಾರಿ ಉನ್ನತ ಪ್ರಾಥಮಿಕ ಶಾಲೆ</Text>
         <View style={styles.tc}>
           <TouchableOpacity>
@@ -155,17 +156,15 @@ const SchoolDesc = ({navigation, route}) => {
         />
         {left ? (
           <View  style={styles.container_bottom}>
-            <Progress step={5} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Bench</Text>} />
-            <Progress step={9} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Desk</Text>} />
-            <Progress step={3} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Table</Text>} />
-            <Progress step={6} steps={10} height={7} name={<Text style={styles.progressBarStyle}>Black Board</Text>} />
+            <Progress step={1} steps={n.bench !== undefined ? n.bench : 10} height={7} name={<Text style={styles.progressBarStyle}>Bench</Text>} />
+            <Progress step={1} steps={n.desk !== undefined ? n.desk : 10} height={7} name={<Text style={styles.progressBarStyle}>Desk</Text>} />
+            <Progress step={1} steps={n.table !== undefined ? n.table : 10} height={7} name={<Text style={styles.progressBarStyle}>Table</Text>} />
+            <Progress step={1} steps={n.board !== undefined ? n.board : 10} height={7} name={<Text style={styles.progressBarStyle}>Black Board</Text>} />
           </View>
         ) : (
           <View style={styles.container_bottom}>
             <Text style={{color:'white'}}>
-              ################################################################
-              #############################################################
-              ###############################################
+             {n.desc == undefined ? " " : n.desc}
             </Text>
           </View>
         )}

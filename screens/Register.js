@@ -35,6 +35,7 @@ export default function SignUp({navigation}) {
           style={styles.input}
           value={email}
           placeholder='Email'
+          keyboardType="email-address"
           autoCapitalize="none"
           placeholderTextColor='white'
           onChangeText={(email1)=>setEmail(email1)}

@@ -42,7 +42,7 @@ export default function Login({navigation}) {
         <Button
           title='Not registered? Signup'
           onPress={()=>{
-            navigation.navigate("Login");
+            navigation.navigate("Register");
           }}
         />
       </View>

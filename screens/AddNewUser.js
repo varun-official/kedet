@@ -5,7 +5,8 @@ export default function writeUserData(name, email, phone) {
   db.collection("users").doc(phone).set({
     name: name,
     email: email,
-    phone: phone
+    phone: phone,
+    role:2
   })
   .then(() => {
     const d = new Date();

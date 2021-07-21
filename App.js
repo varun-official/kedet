@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Providers from './navigation';
 
 const App = () => {
+
   return <Providers />;
 };
 

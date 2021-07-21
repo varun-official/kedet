@@ -21,7 +21,7 @@ import Login from '../screens/Login';
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator initialRouteName={"Register"}>      
+    <Stack.Navigator initialRouteName={"Login"}>      
       <Stack.Screen name="Login" options={{header: ()=>null}} component={Login}></Stack.Screen>
       <Stack.Screen name="Register" options={{header: ()=>null}} component={Register}></Stack.Screen>
    </Stack.Navigator>

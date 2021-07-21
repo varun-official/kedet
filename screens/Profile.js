@@ -20,6 +20,7 @@ import {Input, FormControl, Button} from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Feather';
 import Animated from 'react-native-reanimated';
+import Loading from './Loading';
 
 const height = Dimensions.get('window').height;
 
@@ -29,29 +30,41 @@ const Profile = ({navigation,route}) => {
   const [nobench, setNobench] = useState(1);
   const [nodesk, setNodesk] = useState(1);
   const [notable, setNotable] = useState(1);
-  const [noboard, setNoboard] = useState(1);
-  
+  const [noboard, setNoboard] = useState(1); 
   const [isHead, setIsHead] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const {user,logout} = React.useContext(AuthContext);
   const [pincode,setPinCode]=React.useState(null);
+  const [userName,setUserName] = React.useState(null);
+  const [isHeadMaster,setIsHeadMaster] = React.useState(false);
+  const [marginTop,setMarginTop] = React.useState(-105);
+  const [phoneNumber,setPhoneNumber] = React.useState(null);
   
- 
   React.useEffect(()=>{
     db.collection("users").where('email',"==",user.email).get()
     .then((docs)=>{
         docs.forEach((doc)=>{
            console.log(doc.data());
            if(doc.data().schoolId !== undefined){
-              setPinCode(doc.data().schoolId); 
+              setPinCode(doc.data().schoolId);
               console.log(pincode);
            }
+           if(doc.data().role == "1"){
+             setIsHeadMaster(true);
+             setMarginTop(-55);
+           }  
+             
+           setUserName(doc.data().name); 
+           setPhoneNumber(doc.data().phone); 
         })
     }).catch((e)=>{
        console.log(e);
-    });                   
-  },[]);
+    });               
+        
+  },[route.params]);
   
+  
+  if(userName == null) return <Loading/>
   return (
     <ScrollView
       contentContainerStyle={
@@ -140,7 +153,8 @@ const Profile = ({navigation,route}) => {
                      bench:nobench,
                      desk:nodesk,
                      table:notable,
-                     board:noboard   
+                     board:noboard,
+                     date: Date().now()   
                  }).then(() => {
                    console.log("Successfully added requirement");
                  })
@@ -155,19 +169,16 @@ const Profile = ({navigation,route}) => {
         </View>
       </Modal>
       
-      <TouchableOpacity style={{marginTop:-55,marginLeft: '50%', }} onPress={()=>{
+      <TouchableOpacity style={{marginTop:marginTop,marginLeft: '75%', }} onPress={()=>{
         logout();
       }}>
         <Icon name="power" style={styles.topIcon}/>
       </TouchableOpacity>
-      <TouchableOpacity style={{marginLeft: '80%', marginTop: -25}}>
-        <Icon name="users" style={styles.topIcon} />
-      </TouchableOpacity>
       <View style={styles.inner_container}>
-        {isHead ? (
+        {isHeadMaster ? (
           <View style={styles.inside_main}>
-            <TouchableOpacity onPress={() => navigation.navigate('EditSchool')}>
-              <Text style={styles.inside_main_text2}>Your School</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('EditSchool',{pinCode:pincode})}>
+              <Text style={styles.inside_main_text2}>{"Your School" }</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -182,12 +193,8 @@ const Profile = ({navigation,route}) => {
             editable={false}
             variant="outline"
             placeholder="Enter name"
-            _light={{
-              placeholderTextColor: 'white',
-            }}
-            _dark={{
-              placeholderTextColor: 'white',
-            }}
+            value={userName}
+            color="white"
           />
         </FormControl>
         <FormControl style={styles.input1}>
@@ -209,7 +216,7 @@ const Profile = ({navigation,route}) => {
           <Input
             editable={false}
             variant="outline"
-            placeholder="8548072149"
+            placeholder={phoneNumber}
             _light={{
               placeholderTextColor: 'white',
             }}
@@ -218,6 +225,7 @@ const Profile = ({navigation,route}) => {
             }}
           />
         </FormControl>
+        
       </View>
       {isHead && pincode !== null && (
         <View style={{marginTop: 30}}>
@@ -291,9 +299,8 @@ const styles = StyleSheet.create({
   },
   inside_main_text1: {
     fontSize: 23,
-    left: -40,
-    top: 15,
     color: 'white',
+    top:10
   },
   inside_main_text2: {
     fontSize: 20,
@@ -301,6 +308,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 10,
     color: 'white',
+    marginLeft:20
   },
   inside_main_text3: {
     fontSize: 20,

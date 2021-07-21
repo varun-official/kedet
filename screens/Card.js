@@ -4,11 +4,12 @@ import { Image, Text, Center, Box, Stack} from "native-base";
 import { borderBottom } from "styled-system";
 
 function CardComponent(prop){
+  console.log(prop);
   const styles = StyleSheet.create({
     languageDiv:{
       borderRadius:10,
       backgroundColor:'#2C2E32',
-      borderColor:prop.items.mediumColor,
+      borderColor:prop.items.color,
       width:60,
       height:37,
       position:"absolute",
@@ -41,7 +42,7 @@ function CardComponent(prop){
       rounded="lg"
       width="100%"
     >
-      <Image source={{uri: "https://sample-example.nativebase.io/static/media/dawki-river.ebbf5434.png"}} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
+      <Image source={{uri: prop.items.image}} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
       {prop.items.new && <View position="absolute" top={0} style={styles.floatingDiv}>
          <View style={{width:5,height:5,backgroundColor:"white",marginTop:13,borderRadius:3}}>
          </View>
@@ -59,7 +60,7 @@ function CardComponent(prop){
            </View>
         </View>
         <Text lineHeight={[5, 5, 7]} style={{fontSize:12}} color="#C4C4C4">
-        {prop.items.place}
+        {prop.items.address}
         </Text>
       </Stack>
       </Box>
