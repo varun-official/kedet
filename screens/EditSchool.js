@@ -27,6 +27,7 @@ import db from "../firestore";
 import {AuthContext} from "../navigation/AuthProvider";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from './Loading';
+
 const EditSchool = ({navigation,route}) => {
   const [schoolName,setSchoolName] = React.useState(null);
   const [schoolAddress,setSchoolAddress] =React.useState(null);
@@ -37,12 +38,14 @@ const EditSchool = ({navigation,route}) => {
   const [schoolUPI,setUPI] = React.useState(null);
   const {user} = React.useContext(AuthContext);
   const [imageURL,setImageURL] = useState(null);
+  const [dbPincode,setDbPinCode] = useState(null);
   const [desc,setDesc] = React.useState(null);
   const [image, setImage] = useState(null);
  
   const [isVisible,setIsVisible] = useState(false);
   const [loading,setLoading] = useState(true);
   const {pinCode} = route.params;
+  const {phone} = route.params; 
   
   React.useEffect(()=>{
     db.collection("school").doc(pinCode).get()
@@ -50,13 +53,14 @@ const EditSchool = ({navigation,route}) => {
        if(doc.exists){
           setSchoolName(doc.data().name);
           setSchoolAddress(doc.data().address);
-          setPinCode(doc.data().pincode);
           setMedium(doc.data().medium);
           setBankAccntNo(doc.data().accountNo);
           setIFSCCode(doc.data().ifscCode);
+          setDbPinCode(doc.data().pincode);
           setUPI(doc.data().upiId);
           setImage(doc.data().image);
-          setImage(doc.data().desc);
+          if(doc.data().desc !== undefined)
+           setDesc(doc.data().desc);
        }
        setLoading(false);
         
@@ -185,14 +189,19 @@ const EditSchool = ({navigation,route}) => {
           </FormControl>
           <FormControl style={styles.input}>
             {schoolPinCode && <FormControl.Label>School pinCode:</FormControl.Label>}
-            <Input
+            {dbPincode !== null ? <Input
+              variant="outline"
+              color="white"
+              editable={false}
+              value={dbPincode}
+            />:<Input
               variant="outline"
               color="white"
               keyboardType="numeric"
               placeholder="Enter school pincode"
               value={schoolPinCode}
               onChangeText={(val)=>setPinCode(val)}
-            />
+            />}
           </FormControl>
           <FormControl style={styles.input}>
             {schoolMedium && <FormControl.Label>School Medium:</FormControl.Label>}
@@ -246,6 +255,7 @@ const EditSchool = ({navigation,route}) => {
               color="white"
               value={desc}
               multiline={true}
+              onChangeText={(e)=>{setDesc(e);console.log(e)}}
               numberOfLines={5}
             />
           </FormControl>
@@ -268,40 +278,29 @@ const EditSchool = ({navigation,route}) => {
                 marginLeft: 15,
               }}>
               <TouchableOpacity onPress={() => {
-                  if(schoolName && schoolAddress && schoolPinCode && schoolMedium && schoolBankAccntNo && schoolIFSCCode && schoolUPI && desc){                
-                      AsyncStorage.setItem('@pincode', schoolPinCode);
+                  if(dbPincode !== null && dbPincode !== undefined) setPinCode(dbPincode); 
+                  if(schoolName && schoolAddress &&  schoolPinCode && schoolMedium && schoolBankAccntNo && schoolIFSCCode && schoolUPI && desc){                
+                      console.log(desc);
                        
                       if(image !== null && image.path !== undefined && image.path !== null){            
                           storageSchool(image.path,schoolPinCode).then((url)=>{
                                db.collection("school").doc(schoolPinCode).set({
                                     name: schoolName,
                                     address: schoolAddress,
-                                    pincode: schoolPinCode,
+                                    pincode: (dbPinCode == null ? schoolPinCode : dbPinCode),
                                     medium:schoolMedium,
                                     accountNo:schoolBankAccntNo,
                                     ifscCode:schoolIFSCCode,
                                     upiId:schoolUPI,
                                     desc:desc,
                                     image:url,
-                                    date: Date().now()                            
+                                    date: Date().now(),
+                                    phone:phone                            
                                 },{merge:true})
                                 .then(() => {
-                                    const d = new Date();
-                                    console.log("School document successfully updated at " + d.toString());
-                                    db.collection("users").where('email',"==",user.email).get()
-                                      .then((querySnapshot) => {
-                                           console.log("User document successfully written at " + d.toString());
-                                           querySnapshot.forEach((doc) => {
-                                           doc.ref.update({
-                                                schoolId:schoolPinCode
-                                           });
-                                        });
-                                      })
-                                      .catch((error) => {
-                                          console.log("Error getting documents1: ", error);
-                                      })
-                                    })
-                                 .catch((error) => {
+                                    
+                                })
+                                .catch((error) => {
                                     console.error("Error writing document2: ", error);
                                  })
                               })
@@ -318,7 +317,7 @@ const EditSchool = ({navigation,route}) => {
                                     upiId:schoolUPI,
                                     image:image,
                                     desc:desc,
-                                    date: Date().now()                   
+                                    date: Date.now()                   
                                 },{merge:true})
                                 .then(() => {
                                     const d = new Date();
@@ -341,6 +340,7 @@ const EditSchool = ({navigation,route}) => {
                                  })
                       navigation.navigate('Profile',{refresh:true});
                   }else{
+                      console.log(schoolName, schoolAddress, schoolPinCode, schoolMedium, schoolBankAccntNo,schoolIFSCCode,schoolUPI, desc);
                       const msg = "Fields cannot be empty"
                       if (Platform.OS === 'android') {
                          ToastAndroid.show(msg, ToastAndroid.SHORT)

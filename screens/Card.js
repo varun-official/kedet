@@ -9,19 +9,20 @@ function CardComponent(prop){
     languageDiv:{
       borderRadius:10,
       backgroundColor:'#2C2E32',
-      borderColor:prop.items.color,
       width:60,
       height:37,
       position:"absolute",
-      marginLeft:'70%',
-      borderWidth:2,
+      marginLeft:"75%",
+      backgroundColor: 'rgba(78,78,78,0.35)',
       justifyContent:'center',
       alignItems:'center',
       marginTop:3
     },
     text:{
-      color:'white',
-      fontSize:12
+      color:prop.items.color,
+      opacity:0.89,
+      fontSize:16,
+      fontWeight:"700"
     },
     floatingDiv:{
       width:50,
@@ -40,28 +41,18 @@ function CardComponent(prop){
     <Box
       bg="#2C2E32"
       rounded="lg"
-      width="100%"
+      width="95%"
     >
-      <Image source={{uri: prop.items.image}} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
-      {prop.items.new && <View position="absolute" top={0} style={styles.floatingDiv}>
-         <View style={{width:5,height:5,backgroundColor:"white",marginTop:13,borderRadius:3}}>
-         </View>
-         <Text bold color="white" style={{fontSize:12,marginLeft:5}}>
-           New
-         </Text>
-      </View>}
+      <Image source={{uri: prop.items.image}} alt="image base" resizeMode="cover" height={300} roundedTop="xl" roundedBottom="xl"/>
       <Stack space={1}  style={{marginLeft:10,marginTop:15}}>
         <View>
-           <Text lineHeight={[5, 5, 7]} style={{fontSize:15}} color="white">
+           <Text lineHeight={[6, 4, 7]} style={{fontSize:18,width:200}} color="white">
                  {prop.items.name}
            </Text>
            <View style={styles.languageDiv}>
              <Text style={styles.text}> {prop.items.medium}</Text>
            </View>
         </View>
-        <Text lineHeight={[5, 5, 7]} style={{fontSize:12}} color="#C4C4C4">
-        {prop.items.address}
-        </Text>
       </Stack>
       </Box>
     );

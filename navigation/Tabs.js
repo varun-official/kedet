@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+import db from "../firestore";
 const Stack = createStackNavigator();
-
+import {AuthContext} from "./AuthProvider";
 import {
   SafeAreaView,
   ScrollView,
@@ -16,6 +17,7 @@ import {
   Animated,
 } from 'react-native';
 
+import Loading from '../screens/Loading';
 import Icon from 'react-native-vector-icons/Ionicons';
 const Tab = createBottomTabNavigator();
 import {NativeBaseProvider} from 'native-base';
@@ -52,6 +54,27 @@ const stackScrenProfile = () => {
   );
 };
 const Tabs = () => {
+  const {user} = React.useContext(AuthContext);
+  const [isHead,setIsHead] = React.useState(null);
+  
+  React.useEffect(()=>{
+    db.collection("users").where('email',"==",user.email).get()
+    .then((docs)=>{
+        docs.forEach((doc)=>{
+           if(doc.data().role == "1"){
+             setIsHead(true);
+             return;
+           }else{
+              setIsHead(false);
+           }  
+        });
+    }).catch((e)=>{
+       console.log(e);
+    });               
+        
+  },[]);
+  
+  if(isHead == null) return <Loading/>
   return (
     <NativeBaseProvider>
       <Tab.Navigator
@@ -64,6 +87,7 @@ const Tabs = () => {
             elevation: 0,
             backgroundColor: '#000000',
             height: 60,
+            borderTopWidth:0
           },
         }}>
         <Tab.Screen
@@ -121,10 +145,10 @@ const Tabs = () => {
                 </Text>
               </View>
             ),
-          }}></Tab.Screen>*/}
+          }}></Tab.Screen>*/}   
         <Tab.Screen
-          name="Notice"
-          component={MissingChild}
+          name= {!isHead ? "Report" : "Notification"} 
+          component={!isHead ? MissingChild : Notice}
           options={{
             tabBarIcon: ({focused}) => (
               <View
@@ -134,7 +158,7 @@ const Tabs = () => {
                   justifyContent: 'center',
                 }}>
                 <Icon
-                  name="mail-unread"
+                  name={!isHead ? "add-circle" : "alert-circle"}
                   style={{
                     fontSize: 25,
                     color: focused ? 'white' : '#adadad',
@@ -145,7 +169,7 @@ const Tabs = () => {
                     color: focused ? 'white' : '#adadad',
                     fontSize: 12,
                   }}>
-                  Notice
+                  {!isHead ? "Report" : "Notification"}
                 </Text>
               </View>
             ),

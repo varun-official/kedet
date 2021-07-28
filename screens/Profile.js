@@ -39,15 +39,14 @@ const Profile = ({navigation,route}) => {
   const [isHeadMaster,setIsHeadMaster] = React.useState(false);
   const [marginTop,setMarginTop] = React.useState(-105);
   const [phoneNumber,setPhoneNumber] = React.useState(null);
+  const [refresh,setRefresh] = React.useState(false);
   
   React.useEffect(()=>{
     db.collection("users").where('email',"==",user.email).get()
     .then((docs)=>{
         docs.forEach((doc)=>{
-           console.log(doc.data());
            if(doc.data().schoolId !== undefined){
               setPinCode(doc.data().schoolId);
-              console.log(pincode);
            }
            if(doc.data().role == "1"){
              setIsHeadMaster(true);
@@ -58,13 +57,15 @@ const Profile = ({navigation,route}) => {
            setPhoneNumber(doc.data().phone); 
         })
     }).catch((e)=>{
-       console.log(e);
     });               
         
-  },[route.params]);
-  
-  
-  if(userName == null) return <Loading/>
+  },[]);
+    
+  const refresher = ()=>{
+     setRefresh(true);
+  }
+   
+  if(userName == null || pincode == null) return <Loading/>
   return (
     <ScrollView
       contentContainerStyle={
@@ -177,7 +178,7 @@ const Profile = ({navigation,route}) => {
       <View style={styles.inner_container}>
         {isHeadMaster ? (
           <View style={styles.inside_main}>
-            <TouchableOpacity onPress={() => navigation.navigate('EditSchool',{pinCode:pincode})}>
+            <TouchableOpacity onPress={() => navigation.navigate('EditSchool',{pinCode:pincode,phone:phoneNumber})}>
               <Text style={styles.inside_main_text2}>{"Your School" }</Text>
             </TouchableOpacity>
           </View>

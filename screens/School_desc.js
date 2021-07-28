@@ -10,6 +10,7 @@ import {
   Image,
   TouchableOpacity,
   Animated,
+  Linking,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,7 +19,13 @@ const SchoolDesc = ({navigation, route}) => {
   const [left, setLeft] = useState(true);
   const [right, setRight] = useState(false);
   const [name1, setName1] = useState('');
-
+  const openloc = () => {
+      const lat = 12.9579542;
+      const lng = 75.2145407;
+      var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';
+      var url = scheme + `${lat},${lng}`;
+      Linking.openURL(url);
+    };
   const pressLeft = () => {
     setLeft(true);
     setRight(false);
@@ -35,7 +42,7 @@ const SchoolDesc = ({navigation, route}) => {
     const [width, setWidth] = useState(0);
     const animatedvalue = React.useRef(new Animated.Value(-1000)).current;
     const reactive = React.useRef(new Animated.Value(-1000)).current;
-
+    
     useEffect(() => {
       Animated.timing(animatedvalue, {
         toValue: reactive,
@@ -107,13 +114,13 @@ const SchoolDesc = ({navigation, route}) => {
               <Text style={styles.tt}>Donate</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL(`tel:${n.phone}`)}>
             <View style={styles.gridContiner}>
               <Icon name="call" style={styles.icon} />
               <Text style={styles.tt}>Call</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={openloc}>
             <View style={styles.gridContiner}>
               <Icon name="location" style={styles.icon} />
               <Text style={styles.tt}>Location</Text>
@@ -179,7 +186,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#2C2E32'
   },
   image: {
-    height: 200,
+    height: 220,
   },
   hedding_text: {
     fontSize: 22,
@@ -243,8 +250,7 @@ const styles = StyleSheet.create({
   container_bottom: {
     justifyContent: 'center',
     paddingHorizontal: 10,
-    flex:1,
-    paddingTop:20
+    flex:1
     
   },
   progressBarStyle:{
@@ -253,3 +259,4 @@ const styles = StyleSheet.create({
 });
 
 export default SchoolDesc;
+

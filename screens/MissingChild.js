@@ -12,8 +12,9 @@ import {
   Toast,
   AlertIOS,
   Platform,
-  ToastAndroid,
+  ToastAndroid
 } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 
 import ImagePicker from 'react-native-image-crop-picker';
 import db from "../firestore";
@@ -23,8 +24,8 @@ import storageMissingChild from "../storageMissingChild";
 const MissingChild = ({navigation}) => {
   const [image, setImage] = useState(null);
   const [childName,setChildName] = React.useState();
-  const [landMark,setLandMark] = React.useState();
   const [pincode,setPinCode] = React.useState();
+  const [location, setLocation] = useState(null);
   
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -34,6 +35,24 @@ const MissingChild = ({navigation}) => {
     }).then(image => {
       setImage(image.path);
     });
+  };
+  const get_loc = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+        setLocation(position);
+      },
+      error => {
+        // See error code charts below.
+        const msg = error.message;
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT)
+        } else {
+            AlertIOS.alert(msg);
+        }
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
   };
 
   return (
@@ -73,16 +92,6 @@ const MissingChild = ({navigation}) => {
             />
           </FormControl>
           <FormControl style={styles.input}>
-            <FormControl.Label>LandMark:</FormControl.Label>
-            <Input
-              variant="outline"
-              placeholder="Enter the LandMark"
-              value={landMark}
-              onChangeText={(val)=>setLandMark(val)}
-              color="white"
-            />
-          </FormControl>
-          <FormControl style={styles.input}>
             <FormControl.Label>Pincode:</FormControl.Label>
             <Input
               variant="outline"
@@ -93,6 +102,14 @@ const MissingChild = ({navigation}) => {
               color="white"
             />
           </FormControl>
+          <FormControl style={styles.input_loc}>
+            <FormControl.Label>LandMark:</FormControl.Label>
+            <TouchableOpacity onPress={get_loc}>
+              <Text style={styles.location}>
+                {location ? 'Location Added' : 'Add Location'}
+              </Text>
+            </TouchableOpacity>
+          </FormControl>
           <View
             style={{
               flexDirection: 'row',
@@ -102,16 +119,17 @@ const MissingChild = ({navigation}) => {
             <TouchableOpacity
               onPress={() => {
                 setImage(null);
+                setLocation(null);
                 navigation.navigate("Home");
               }}>
               <Text style={styles.panelInputButtonC}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-              if(landMark && pincode && image!==undefined){ 
+              if(location && pincode && image!==undefined){ 
                  storageMissingChild(Date.now(),image).then((url)=>{
                    db.collection("children").add({
                       name:(childName !== undefined && childName !== null ? childName : " "),
-                      landMark:landMark,
+                      landMark:location,
                       pincode:pincode,
                       image:url == undefined ? null : url
                    })
@@ -124,7 +142,7 @@ const MissingChild = ({navigation}) => {
                     });
                     navigation.navigate("Home");
                     setChildName();
-                    setLandMark();
+                    setLocation();
                     setPinCode();
                 }).catch(err=>console.log(err));
               }else{
@@ -179,9 +197,22 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color:"white"
   },
+  location: {
+    fontSize: 20,
+    backgroundColor: '#242B2E',
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 15,
+    width: 200,
+    textAlign: 'center',
+  },
   input: {
     marginTop: 20,
     width: '100%',
+  },
+  input_loc: {
+    marginTop: 20,
+    alignItems: 'center',
   },
   panelInputButtonC: {
     borderWidth: 2,

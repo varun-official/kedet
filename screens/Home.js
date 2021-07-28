@@ -24,6 +24,7 @@ function App({navigation}) {
   const [search, setSearch] = useState('');
   const [school, setSchool] = useState([]);    
   const [searchedSchool, setSearchedSchool] = useState(school);
+  const colorList = ["#D2EBCD","#F185B3","#A7D129","#94FC13","#F7FF56","#32E0C4","#FFDD67","#4DD599"];
   
   React.useEffect(()=>{
     db.collection('school')
@@ -32,8 +33,7 @@ function App({navigation}) {
       const documents = querySnapshot.docs.map(doc => doc.data())
       documents.map((item,index)=>{
          item['id'] = index;
-         if(index%2)item['color'] = 'red';
-         else item['color'] = '#1556FD';
+         item['color'] = colorList[index%colorList.length];
       });
       documents.sort((a,b)=>{
          return b.date - a.date
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
  });
   
   
-  console.log(searchedSchool);
   
   if(searchedSchool == undefined || searchedSchool == null) return <Loading/>
   const contains = ({place, pincode}, query) => {
@@ -138,7 +137,6 @@ const styles = StyleSheet.create({
     const data = _.filter(school, sch => {
       return contains(sch, formattedQuery.toLowerCase());
     });
-    console.log(formattedQuery);
     setSearchedSchool(data);
   };
 
@@ -165,7 +163,7 @@ const styles = StyleSheet.create({
         <FlatList
           data={searchedSchool}
           keyExtractor={item => item.id}
-          style={{marginTop:5}}
+          style={{marginTop:15}}
           renderItem={({item}) => (
             <View style={styles.card}>
               <TouchableOpacity
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
                 <Card item={item} />
                 <View
                   style={{
-                    borderBottomColor: 'grey',
+                    borderBottomColor: '#2C2E32',
                     borderBottomWidth: 1,
                     marginTop: 20,
                     opacity: 0.7,
