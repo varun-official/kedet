@@ -108,7 +108,7 @@ const SchoolDesc = ({navigation, route}) => {
         <Text style={styles.hedding_text}>{n.name}</Text>
         <Text style={styles.hedding_text_kan}>ಸರ್ಕಾರಿ ಉನ್ನತ ಪ್ರಾಥಮಿಕ ಶಾಲೆ</Text>
         <View style={styles.tc}>
-          <TouchableOpacity>
+           <TouchableOpacity onPress={() => navigation.navigate('Donate')}>
             <View style={styles.gridContiner}>
               <Icon name="heart" style={styles.icon} />
               <Text style={styles.tt}>Donate</Text>

@@ -28,6 +28,7 @@ import Profile from '../screens/Profile';
 import Socialmedia from '../screens/Socialmedia';
 import EditSchool from '../screens/EditSchool';
 import MissingChild from '../screens/MissingChild';
+import Donate from '../screens/Donate';
 
 const stackScrenHome = () => {
   return (
@@ -37,7 +38,8 @@ const stackScrenHome = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="Home" component={Home}></Stack.Screen>
-      <Stack.Screen name="SchoolDesc" component={SchoolDesc}></Stack.Screen>
+      <Stack.Screen name="SchoolDesc" component={SchoolDesc}></Stack.Screen>  
+      <Stack.Screen name="Donate" component={Donate}></Stack.Screen>
     </Stack.Navigator>
   );
 };

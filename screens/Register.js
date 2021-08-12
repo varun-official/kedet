@@ -1,75 +1,141 @@
-import React from 'react'
+import React from 'react';
 import {
-  View,
-  Button,
-  TextInput,
   StyleSheet,
   Text,
-  ToastAndroid,
-  Platform,
-  AlertIOS
+  View,
+  TextInput,
+  ScrollView,
+  ImageBackground,
+  Dimensions,
+  TouchableOpacity,
 } from 'react-native';
-import {AuthContext} from "../navigation/AuthProvider";
-import AddNewUser from "./AddNewUser";
+import {NativeBaseProvider} from 'native-base';
+import {Input, FormControl} from 'native-base';
 
-export default function SignUp({navigation}) {
-   
-   const [email,setEmail] = React.useState();
-   const [phone,setPhone] = React.useState();
-   const [name,setName] = React.useState();
-   const [password,setPassword] = React.useState();
-   const [confirmPassword,setConfirmPassword] = React.useState();
-   const {register} = React.useContext(AuthContext);
-   
-   return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          value={name}
-          placeholder='Name'
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={(name)=>setName(name)}
-        />
-        <TextInput
-          style={styles.input}
-          value={email}
-          placeholder='Email'
-          keyboardType="email-address"
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={(email1)=>setEmail(email1)}
-        />
-        <TextInput
-          style={styles.input}
-          value={phone}
-          placeholder='Phone number'
-          keyboardType="numeric"
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={(phone)=>setPhone(phone)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Password'
-          value={password}
-          secureTextEntry={true}
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={(pass)=>setPassword(pass)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Confirm Password'
-          value={confirmPassword}
-          secureTextEntry={true}
-          autoCapitalize="none"
-          placeholderTextColor='white'
-          onChangeText={(pass)=>setConfirmPassword(pass)}
-        />
-        <Button
-          title='Sign Up'
-          onPress={()=>{
+import {AuthContext} from '../navigation/AuthProvider';
+/*
+import AddNewUser from './AddNewUser';
+*/
+const SignUp = ({navigation}) => {
+  const [email, setEmail] = React.useState();
+  const [phone, setPhone] = React.useState();
+  const [name, setName] = React.useState();
+  const [password, setPassword] = React.useState();
+  const [confirmPassword, setConfirmPassword] = React.useState();
+  //  const {register} = React.useContext(AuthContext);
+  return (
+    <NativeBaseProvider>
+      <ScrollView
+        style={{flex: 1, backgroundColor: '#2C2E32'}}
+        showsHorizontalScrollIndicator={false}>
+        <ImageBackground
+          source={require('../assets/back.jpg')}
+          style={{
+            height: Dimensions.get('window').height / 2.2,
+          }}>
+          <View style={styles.brandview}>
+            <Text style={styles.brandText}>Kedet</Text>
+          </View>
+        </ImageBackground>
+        <View style={styles.bottomview}>
+          <View style={{padding: 10}}>
+            <Text style={{color: '#fff', fontSize: 30, textAlign: 'center'}}>
+              Welcome
+            </Text>
+            <View style={{marginTop: 20}}>
+              <FormControl style={{borderColor: '#2C2E32'}}>
+                <FormControl.Label style={{paddingLeft: 10}}>
+                  Email:
+                </FormControl.Label>
+                <Input
+                  style={{
+                    borderBottomWidth: 1,
+                    borderColor: '#5DA3FA',
+                    padding: 10,
+                  }}
+                  placeholderTextColor="#CAD5E2"
+                  variant="outline"
+                  placeholder="Enter the email"
+                  keyboardType="email-address"
+                  value={email}
+                  onChangeText={email1 => setEmail(email1)}
+                />
+              </FormControl>
+              <FormControl style={{borderColor: '#2C2E32', marginTop: 15}}>
+                <FormControl.Label style={{paddingLeft: 10}}>
+                  Phone:
+                </FormControl.Label>
+                <Input
+                  style={{
+                    borderBottomWidth: 1,
+                    borderColor: '#5DA3FA',
+                    padding: 10,
+                  }}
+                  placeholderTextColor="#CAD5E2"
+                  variant="outline"
+                  placeholder="Enter the phone number"
+                  keyboardType="phone-pad"
+                  value={phone}
+                  onChangeText={phone => setPhone(phone)}
+                />
+              </FormControl>
+              <FormControl style={{borderColor: '#2C2E32', marginTop: 15}}>
+                <FormControl.Label style={{paddingLeft: 10}}>
+                  Name:
+                </FormControl.Label>
+                <Input
+                  style={{
+                    borderBottomWidth: 1,
+                    borderColor: '#5DA3FA',
+                    padding: 10,
+                  }}
+                  placeholderTextColor="#CAD5E2"
+                  variant="outline"
+                  placeholder="Enter the name"
+                  keyboardType="name-phone-pad"
+                  value={name}
+                  onChangeText={name => setName(name)}
+                />
+              </FormControl>
+              <FormControl style={{marginTop: 15}}>
+                <FormControl.Label style={{paddingLeft: 10}}>
+                  Password:
+                </FormControl.Label>
+                <Input
+                  style={{
+                    borderBottomWidth: 1,
+                    borderColor: '#5DA3FA',
+                    padding: 10,
+                  }}
+                  placeholderTextColor="#CAD5E2"
+                  variant="outline"
+                  placeholder="Enter the password"
+                  type="password"
+                  value={password}
+                  onChangeText={pass => setPassword(pass)}
+                />
+              </FormControl>
+              <FormControl style={{marginTop: 15}}>
+                <FormControl.Label style={{paddingLeft: 10}}>
+                  Re-enter-Password:
+                </FormControl.Label>
+                <Input
+                  style={{
+                    borderBottomWidth: 1,
+                    borderColor: '#5DA3FA',
+                    padding: 10,
+                  }}
+                  placeholderTextColor="#CAD5E2"
+                  variant="outline"
+                  placeholder="Enter the password"
+                  type="password"
+                  value={confirmPassword}
+                  onChangeText={pass => setConfirmPassword(pass)}
+                />
+              </FormControl>
+            </View>
+            <TouchableOpacity  
+            onPress={()=>{
             if(password === confirmPassword){
               AddNewUser(name, email, phone);
               register(email,password);
@@ -83,33 +149,66 @@ export default function SignUp({navigation}) {
              }
             }
           }}
-        />
-        
-        <Button
-          title='Already registered? Login'
-          onPress={()=>{
-            navigation.navigate("Login");
-          }}
-        />
-      </View>
-    );
-}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                  marginTop: 30,
+                  borderWidth: 1,
+                  borderColor: '#5DA3FA',
+                  padding: 11,
+                  width: 175,
+                  flex: 1,
+                  borderRadius: 10,
+                  backgroundColor: '#5DA3FA',
+                  alignSelf: 'center',
+                }}>
+                SignUp
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+              <Text style={{textAlign: 'center', paddingTop: 20}}>
+                Have an account?{'  '}
+              </Text>
+              <TouchableOpacity
+                onPress={()=>{
+                  navigation.navigate("Login");
+                }}>
+                <Text style={{color: 'red', paddingTop: 20}}>Login here </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </NativeBaseProvider>
+  );
+};
+
+export default SignUp;
 
 const styles = StyleSheet.create({
-  input: {
-    width: 350,
-    height: 55,
-    backgroundColor: '#42A5F5',
-    margin: 10,
-    padding: 8,
-    color: 'white',
-    borderRadius: 14,
-    fontSize: 18,
-    fontWeight: '500',
-  },
-  container: {
+  brandview: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+    alignItems: 'center',
+  },
+  brandText: {
+    color: '#fff',
+    fontSize: 50,
+    fontFamily: 'BlackOpsOne-Regular',
+  },
+  bottomview: {
+    flex: 1.5,
+    backgroundColor: '#2C2E32',
+    bottom: 50,
+    borderTopStartRadius: 50,
+    borderTopEndRadius: 50,
+  },
+});
+
