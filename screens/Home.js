@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   FlatList,
   TextInput,
-  Keyboard
+  Keyboard,
+  RefreshControl
 } from 'react-native';
 import Card from './Card';
 import {NativeBaseProvider} from 'native-base';
@@ -24,16 +25,18 @@ function App({navigation}) {
   const [search, setSearch] = useState('');
   const [school, setSchool] = useState([]);    
   const [searchedSchool, setSearchedSchool] = useState(school);
-  const colorList = ["#D2EBCD","#F185B3","#A7D129","#94FC13","#F7FF56","#32E0C4","#FFDD67","#4DD599"];
+  const [refresh,setRefresh] = React.useState(false);
+  const [load,setLoading] = React.useState(false);
   
   React.useEffect(()=>{
     db.collection('school')
     .get()
     .then(querySnapshot => {
+      setLoading(true);
       const documents = querySnapshot.docs.map(doc => doc.data())
       documents.map((item,index)=>{
          item['id'] = index;
-         item['color'] = colorList[index%colorList.length];
+         item['color'] = "white";
       });
       documents.sort((a,b)=>{
          return b.date - a.date
@@ -41,8 +44,9 @@ function App({navigation}) {
       console.log(documents);
       setSchool(documents);
       setSearchedSchool(documents);
+      setLoading(false);
     })
-  },[navigation]);
+  },[refresh]);
  
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -124,6 +128,15 @@ const styles = StyleSheet.create({
  });
   
   
+  const [refreshing, setRefreshing] = React.useState(false);
+  const wait = (timeout) => {
+     return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+  const onRefresh = React.useCallback(() => {  
+    setRefreshing(true);
+    setRefresh(!refresh);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   
   if(searchedSchool == undefined || searchedSchool == null) return <Loading/>
   
@@ -143,7 +156,7 @@ const styles = StyleSheet.create({
   };
 
   StatusBar.setBackgroundColor('#00000f');
-
+  if(load)return <Loading/>
   return (
     <NativeBaseProvider>
       <View style={styles.homecontainer}>
@@ -166,6 +179,11 @@ const styles = StyleSheet.create({
           data={searchedSchool}
           keyExtractor={item => item.id}
           style={{marginTop:15}}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+          />}
           renderItem={({item}) => (
             <View style={styles.card}>
               <TouchableOpacity

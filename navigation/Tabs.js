@@ -59,6 +59,7 @@ const stackScrenProfile = () => {
 const Tabs = () => {
   const {user} = React.useContext(AuthContext);
   const [isHead,setIsHead] = React.useState(null);
+  const [load,setLoading] = React.useState(true);
   
   React.useEffect(()=>{
     db.collection("users").where('email',"==",user.email).get()
@@ -77,8 +78,16 @@ const Tabs = () => {
         
   },[]);
   
-  if(isHead == null) return <HomeLoading/>
+  if(isHead == null){
+    setTimeout(function(){
+      setLoading(false);
+    },2000); 
+  }
   
+  if(load)  
+    return <HomeLoading/>
+  
+  if(!load)
   return (
     <NativeBaseProvider>
       <Tab.Navigator

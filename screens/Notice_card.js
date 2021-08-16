@@ -8,13 +8,14 @@ const Notice_card = ({name, pincode, lat, lng,image}) => {
     var url = scheme + `${lat},${lng}`;
     Linking.openURL(url);
   };
+  
   return (
     <>
       <TouchableOpacity onPress={openloc}>
         <View style={styles.container}>
           <Avatar
             source={{
-              uri: image,
+              uri: image
             }}
             size="xl"
             style={{
@@ -22,7 +23,7 @@ const Notice_card = ({name, pincode, lat, lng,image}) => {
             }}
           />
           <View style={styles.right_container}>
-            <Text style={{fontSize: 20, top: -15, color:"white",marginLeft:12}}>Name: {name}</Text>
+            <Text style={{fontSize: 20, top: -15, color:"white",marginLeft:12}}>Name: {name.length > 1? name : "<nan>"}</Text>
             <Text style={{fontSize: 16, top: -5, color:"white",marginLeft:12 }}>Pincode: {pincode}</Text>
             <View style={{bottom: -15, backgroundColor:'#2C2E32',borderRadius:5,padding:5,opacity:0.7}}>
                <Text style={{color:"white"}}>Tap to view location</Text>
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 150,
     borderRadius: 10,
-    borderColor: 'red',
+    borderColor: '#2C2E32',
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',

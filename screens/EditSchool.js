@@ -396,8 +396,8 @@ const styles = StyleSheet.create({
   },
   panelInputButtonC: {
     borderWidth: 2,
-    borderColor: 'red',
-    backgroundColor: 'red',
+    borderColor: '#FF5757',
+    backgroundColor: '#FF5757',
     borderRadius: 10,
     padding: 20,
     width: 130,
@@ -407,8 +407,8 @@ const styles = StyleSheet.create({
 
   panelInputButtonv: {
     borderWidth: 2,
-    borderColor: 'green',
-    backgroundColor: 'green',
+    borderColor: '#00D355',
+    backgroundColor: '#00D355',
     borderRadius: 10,
     padding: 20,
     width: 130,

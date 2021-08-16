@@ -11,12 +11,12 @@ const HomeLoading = () => {
         toValue: 1,
         tension: 10,
         friction: 2,
-        duration: 10000,
+        duration: 1000,
         useNativeDriver: true,
       }).start(),
       Animated.timing(logoText, {
         toValue: 1,
-        duration: 120000,
+        duration: 12000,
         useNativeDriver: true,
       }),
     ]).start();
@@ -43,7 +43,7 @@ export default HomeLoading;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2C2E32',
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
   },

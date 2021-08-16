@@ -8,6 +8,9 @@ import {
   ImageBackground,
   Dimensions,
   TouchableOpacity,
+  ToastAndroid,
+  Platform,
+  AlertIOS,
 } from 'react-native';
 import {NativeBaseProvider} from 'native-base';
 import {Input, FormControl} from 'native-base';
@@ -22,6 +25,44 @@ const SignUp = ({navigation}) => {
   const [password, setPassword] = React.useState();
   const [confirmPassword, setConfirmPassword] = React.useState();
   const {register} = React.useContext(AuthContext);
+  function validatePassword() {
+    var p = password,
+        errors = [];
+    if (p.length < 8) {
+        const msg = "Your password must be at least 8 characters";
+        errors.push("Your password must be at least 8 characters"); 
+        
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT)
+        } else {
+            AlertIOS.alert(msg);
+        }
+    }
+    else if (p.search(/[a-z]/i) < 0) {
+        const msg = "Your password must contain at least one letter.";
+        errors.push("Your password must contain at least one letter.");
+
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT)
+        } else {
+            AlertIOS.alert(msg);
+        }
+    }
+    else if (p.search(/[0-9]/) < 0) {
+        const msg = "Your password must contain at least one digit.";
+        errors.push("Your password must contain at least one digit."); 
+        
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT)
+        } else {
+            AlertIOS.alert(msg);
+        }
+    }
+    if (errors.length > 0) {
+        return false;
+    }
+    return true;
+  }
   return (
     <NativeBaseProvider>
       <ScrollView
@@ -30,7 +71,7 @@ const SignUp = ({navigation}) => {
         <ImageBackground
           source={require('../assets/back.jpg')}
           style={{
-            height: Dimensions.get('window').height / 2.2,
+            height: Dimensions.get('window').height / 2.4,
           }}>
           <View style={styles.brandview}>
             <Text style={styles.brandText}>Kedet</Text>
@@ -38,13 +79,15 @@ const SignUp = ({navigation}) => {
         </ImageBackground>
         <View style={styles.bottomview}>
           <View style={{padding: 10}}>
-            <Text style={{color: '#fff', fontSize: 30, textAlign: 'center'}}>
+            <Text style={{color: '#fff', fontSize: 30, textAlign: 'center', marginTop:30,fontWeight:"700"}}>
               Welcome
             </Text>
             <View style={{marginTop: 20}}>
               <FormControl style={{borderColor: '#2C2E32'}}>
                 <FormControl.Label style={{paddingLeft: 10}}>
-                  Email:
+                 <Text style={{color:"#E6E6E6"}}>
+                    Email:
+                 </Text>
                 </FormControl.Label>
                 <Input
                   style={{
@@ -52,6 +95,9 @@ const SignUp = ({navigation}) => {
                     borderColor: '#5DA3FA',
                     padding: 10,
                   }}
+                  _light={{
+                      color: "#AAAAAA",
+                  }}     
                   placeholderTextColor="#CAD5E2"
                   variant="outline"
                   placeholder="Enter the email"
@@ -62,7 +108,9 @@ const SignUp = ({navigation}) => {
               </FormControl>
               <FormControl style={{borderColor: '#2C2E32', marginTop: 15}}>
                 <FormControl.Label style={{paddingLeft: 10}}>
-                  Phone:
+                  <Text style={{color:"#E6E6E6"}}>
+                     Phone:
+                  </Text>
                 </FormControl.Label>
                 <Input
                   style={{
@@ -70,6 +118,9 @@ const SignUp = ({navigation}) => {
                     borderColor: '#5DA3FA',
                     padding: 10,
                   }}
+                  _light={{
+                      color: "#AAAAAA",
+                  }}     
                   placeholderTextColor="#CAD5E2"
                   variant="outline"
                   placeholder="Enter the phone number"
@@ -80,7 +131,9 @@ const SignUp = ({navigation}) => {
               </FormControl>
               <FormControl style={{borderColor: '#2C2E32', marginTop: 15}}>
                 <FormControl.Label style={{paddingLeft: 10}}>
-                  Name:
+                  <Text style={{color:"#E6E6E6"}}>
+                    Name:
+                  </Text>
                 </FormControl.Label>
                 <Input
                   style={{
@@ -88,6 +141,9 @@ const SignUp = ({navigation}) => {
                     borderColor: '#5DA3FA',
                     padding: 10,
                   }}
+                  _light={{
+                      color: "#AAAAAA",
+                  }}     
                   placeholderTextColor="#CAD5E2"
                   variant="outline"
                   placeholder="Enter the name"
@@ -98,7 +154,9 @@ const SignUp = ({navigation}) => {
               </FormControl>
               <FormControl style={{marginTop: 15}}>
                 <FormControl.Label style={{paddingLeft: 10}}>
-                  Password:
+                 <Text style={{color:"#E6E6E6"}}>
+                   Password:
+                 </Text>
                 </FormControl.Label>
                 <Input
                   style={{
@@ -106,6 +164,9 @@ const SignUp = ({navigation}) => {
                     borderColor: '#5DA3FA',
                     padding: 10,
                   }}
+                  _light={{
+                      color: "#AAAAAA",
+                  }}     
                   placeholderTextColor="#CAD5E2"
                   variant="outline"
                   placeholder="Enter the password"
@@ -116,7 +177,9 @@ const SignUp = ({navigation}) => {
               </FormControl>
               <FormControl style={{marginTop: 15}}>
                 <FormControl.Label style={{paddingLeft: 10}}>
-                  Re-enter-Password:
+                 <Text style={{color:"#E6E6E6"}}>
+                  Re-enter password:
+                 </Text>
                 </FormControl.Label>
                 <Input
                   style={{
@@ -124,6 +187,9 @@ const SignUp = ({navigation}) => {
                     borderColor: '#5DA3FA',
                     padding: 10,
                   }}
+                  _light={{
+                      color: "#AAAAAA",
+                  }}     
                   placeholderTextColor="#CAD5E2"
                   variant="outline"
                   placeholder="Enter the password"
@@ -136,9 +202,11 @@ const SignUp = ({navigation}) => {
             <TouchableOpacity  
             onPress={()=>{
             if(password === confirmPassword){
-              AddNewUser(name, email, phone).then(()=>{            
-                register(email,password);
-              });
+              if(validatePassword()){
+                AddNewUser(name, email, phone).then(()=>{            
+                  register(email,password);
+                });
+              }
             }
             else {
              const msg = "Passwords dont'match"
@@ -154,7 +222,7 @@ const SignUp = ({navigation}) => {
                 style={{
                   textAlign: 'center',
                   fontSize: 20,
-                  marginTop: 30,
+                  marginTop: 45,
                   borderWidth: 1,
                   borderColor: '#5DA3FA',
                   padding: 11,
@@ -173,14 +241,14 @@ const SignUp = ({navigation}) => {
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-              <Text style={{textAlign: 'center', paddingTop: 20}}>
+              <Text style={{textAlign: 'center', paddingTop: 20,color:"white"}}>
                 Have an account?{'  '}
               </Text>
               <TouchableOpacity
                 onPress={()=>{
                   navigation.navigate("Login");
                 }}>
-                <Text style={{color: 'red', paddingTop: 20}}>Login here </Text>
+                <Text style={{color: '#96BAFF', paddingTop: 20, fontWeight:"700"}}>Login here </Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -169,7 +169,7 @@ const SchoolDesc = ({navigation, route}) => {
             <Progress step={n.gotBoard} steps={n.board !== undefined ? n.board : 10} height={7} name={<Text style={styles.progressBarStyle}>Black Board</Text>} />
           </View>
         ) : (
-          <View style={styles.container_bottom}>
+          <View style={styles.container_bottom1}>
             <Text style={{color:'white'}}>
              {n.desc == undefined ? " " : n.desc}
             </Text>
@@ -247,11 +247,18 @@ const styles = StyleSheet.create({
     color: '#BEBEBE',
 
   },
+  container_bottom1: {
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+    flex:1,
+    paddingTop:10,
+    alignItems:"center"    
+  },
   container_bottom: {
     justifyContent: 'center',
     paddingHorizontal: 10,
-    flex:1
-    
+    flex:1,
+    paddingTop:10    
   },
   progressBarStyle:{
      color:'white'

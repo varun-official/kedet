@@ -20,7 +20,7 @@ function CardComponent(prop){
     },
     text:{
       color:prop.items.color,
-      opacity:0.89,
+      opacity:0.7,
       fontSize:16,
       fontWeight:"700"
     },

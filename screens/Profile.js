@@ -39,6 +39,7 @@ const Profile = ({navigation,route}) => {
   const [marginTop,setMarginTop] = React.useState(-105);
   const [phoneNumber,setPhoneNumber] = React.useState(null);
   const [refresh,setRefresh] = React.useState(false);
+  const [isVisibleReq,setIsVisibleReq] = React.useState(false);
   
   const [gotDesk,setgotDesk] = React.useState(0);
   const [gotBench,setgotBench] = React.useState(0);
@@ -332,27 +333,35 @@ const Profile = ({navigation,route}) => {
             }}
           />
         </FormControl>
-        
       </View>
-      {isHead && pincode !== null && (
-        <View style={{marginTop: 30}}>
-          <TouchableOpacity onPress={() => setIsVisible(true)}>
-            <Text
-              style={{
-                fontSize: 16,
-                borderWidth: 1,
-                borderColor: '#0D0D0D',
-                padding: 10,
-                backgroundColor: '#111515',
-                color: 'white',
-                borderRadius: 5,
-              }}>
-              + Add Requirement
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      
+      <TouchableOpacity onPress={() => setIsVisibleReq(true)} style={{marginTop:30,marginLeft:-25}}>
+            <Text style={styles.inside_main_text100}>{"Update requirements" }</Text>
+      </TouchableOpacity>
+      <Modal animationType={'slide'} transparent={true} visible={isVisibleReq}>
+        <View style={styles.panel2}>
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.panelTitle}>Update requirements</Text>
+            </View>
+            
+           {isHead && pincode !== null && (
+             <View style={{marginTop: 30}}>
+               <TouchableOpacity onPress={() => setIsVisible(true)}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    borderWidth: 1,
+                    borderColor: '#0D0D0D',
+                    padding: 10,
+                    backgroundColor: '#111515',
+                    color: 'white',
+                    borderRadius: 5,
+                 }}>
+                  + Add Requirement
+                 </Text>
+               </TouchableOpacity>
+             </View>
+            )}
+                 
       {isHead && pincode !== null && (
         <View style={{marginTop: 30}}>
           <TouchableOpacity onPress={() => setIsVisible2(true)}>
@@ -370,7 +379,17 @@ const Profile = ({navigation,route}) => {
             </Text>
           </TouchableOpacity>
         </View>
-      )}
+      )} 
+        <View style={styles.panelInputbottom1}>
+            <TouchableOpacity onPress={() => {
+                setIsVisibleReq(false)
+             }}>
+              <Text style={styles.panelInputButtonc}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
+        </Modal>
+      
     </ScrollView>
   );
 };
@@ -436,6 +455,14 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft:20
   },
+  inside_main_text100: {
+    fontSize: 20,
+    backgroundColor: 'black',
+    padding: 12,
+    borderRadius: 10,
+    color: 'white',
+    marginLeft:20
+  },
   inside_main_text3: {
     fontSize: 20,
     backgroundColor: '#242B2E',
@@ -472,6 +499,20 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: '#00000040',
     marginBottom: 10,
+  },
+  panel2: {
+    padding: 20,
+    backgroundColor: '#111515',
+    paddingTop: 20,
+    height: '45%',
+    marginTop: 'auto',
+    color: 'white',
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    // shadowColor: '#000000',
+    // shadowOffset: {width: 0, height: 0},
+    // shadowRadius: 5,
+    // shadowOpacity: 0.4,
   },
   panel: {
     padding: 20,
@@ -516,6 +557,12 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'space-around',
     marginBottom: 20,
+  },
+  panelInputbottom1: {
+    flexDirection: 'row',
+    height: 50,
+    justifyContent: 'space-around',
+    marginTop:50
   },
   panelInputText: {
     fontSize: 20,
