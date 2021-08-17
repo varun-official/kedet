@@ -283,8 +283,7 @@ const EditSchool = ({navigation,route}) => {
               <TouchableOpacity onPress={() => {
                   if(dbPincode !== null && dbPincode !== undefined) schoolPinCode = dbPincode; 
                   if(schoolName && schoolAddress &&  schoolPinCode && schoolMedium && schoolBankAccntNo && schoolIFSCCode && schoolUPI && desc){                
-                      console.log(desc);
-                       
+                      console.log(desc);                
                       if(image !== null && image.path !== undefined && image.path !== null){            
                           storageSchool(image.path,schoolPinCode).then((url)=>{
                                db.collection("school").doc(schoolPinCode).set({

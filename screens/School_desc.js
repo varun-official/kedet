@@ -163,10 +163,10 @@ const SchoolDesc = ({navigation, route}) => {
         />
         {left ? (
           <View  style={styles.container_bottom}>
-            <Progress step={n.gotBench} steps={n.bench !== undefined ? n.bench : 10} height={7} name={<Text style={styles.progressBarStyle}>Bench</Text>} />
-            <Progress step={n.gotDesk} steps={n.desk !== undefined ? n.desk : 10} height={7} name={<Text style={styles.progressBarStyle}>Desk</Text>} />
-            <Progress step={n.gotTable} steps={n.table !== undefined ? n.table : 10} height={7} name={<Text style={styles.progressBarStyle}>Table</Text>} />
-            <Progress step={n.gotBoard} steps={n.board !== undefined ? n.board : 10} height={7} name={<Text style={styles.progressBarStyle}>Black Board</Text>} />
+            <Progress step={n.gotBench == undefined ? 1 : n.gotBench} steps={n.bench !== undefined ? n.bench : 10} height={7} name={<Text style={styles.progressBarStyle}>Bench</Text>} />
+            <Progress step={n.gotDesk == undefined ? 1 : n.gotDesk} steps={n.desk !== undefined ? n.desk : 10} height={7} name={<Text style={styles.progressBarStyle}>Desk</Text>} />
+            <Progress step={n.gotTable == undefined ? 1 : n.gotTable} steps={n.table !== undefined ? n.table : 10} height={7} name={<Text style={styles.progressBarStyle}>Table</Text>} />
+            <Progress step={n.gotBoard == undefined ? 1 : n.gotBoard} steps={n.board !== undefined ? n.board : 10} height={7} name={<Text style={styles.progressBarStyle}>Black Board</Text>} />
           </View>
         ) : (
           <View style={styles.container_bottom1}>
