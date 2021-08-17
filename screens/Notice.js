@@ -64,8 +64,8 @@ const Notice = () => {
          <Notice_card
             name={item.name}
             pincode={item.pincode}
-            lat={12.9579542}
-            lng={75.2145407}
+            lat={item.latitude}
+            lng={item.longitude}
             image={item.image}
          />);
       })}
